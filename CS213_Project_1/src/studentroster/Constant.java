@@ -7,8 +7,6 @@ package studentroster;
  @author Dylan Turner, Noor Hasan
  */
 
-// dylan is cute
-
 public enum Constant {
     //Leap Year dividing numbers
     QUADRENNIAL(4),
@@ -24,7 +22,6 @@ public enum Constant {
     JUNE (6),
     SEPTEMBER (9),
     NOVEMBER (11),
-    MAJOR_START (0),
     INITIAL_SIZE (4),
     NOT_FOUND (-1),
     MINIMUM_AGE (16),
