@@ -7,7 +7,7 @@ package studentroster;
  @author Dylan Turner, Noor Hasan
  */
 
-// dylan is cute
+// dylan is ugly and noor is adorable
 
 public enum Constant {
     //Leap Year dividing numbers
