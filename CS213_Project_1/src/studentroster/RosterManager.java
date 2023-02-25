@@ -139,7 +139,7 @@ public class RosterManager {
      @param dob the student's date of birth.
      @param major the student's major.
      @param creditsCompleted the amount of credits completed by the student.
-     @return false it the student fails any checks, true otherwise.
+     @return false if the student fails any checks, true otherwise.
      */
     private boolean isAllowed (String dob, String major, String creditsCompleted){
         Date birthday = new Date(dob);
@@ -179,7 +179,7 @@ public class RosterManager {
      Helper method for isAllowed() method, checks if student is allowed age.
      @param today date object containing current day.
      @param dob the student's date of birth.
-     @return false it the student is too young, true otherwise.
+     @return false if the student is too young, true otherwise.
      */
     private boolean isAllowedAge (Date today, Date dob){
         int yearDifference = today.getYear() - dob.getYear();
@@ -203,7 +203,7 @@ public class RosterManager {
     /**
      Helper method for isAllowed() method, checks if a major is valid.
      @param major the major in question.
-     @return false it major is not in the Major Enum class, true if it is.
+     @return false if major is not in the Major Enum class, true if it is.
      */
     private boolean isValidMajor (String major){
         for (Major validMajor : Major.values()) {
