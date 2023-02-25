@@ -6,15 +6,17 @@ import java.util.Scanner;
  It can process single commands or sequences of commands. It stores the roster.
  @author Dylan Turner, Noor Hasan
  */
-public class RosterManager {
+public class TuitionManager {
     private final Roster roster;
+    private final Enrollment enrollment;
 
     /**
      Constructor for the Roster Manager. Creates a
      new roster and stores it.
      */
-    public RosterManager() {
+    public TuitionManager() {
         this.roster = new Roster();
+        this.enrollment = new Enrollment();
     }
 
     /**
@@ -23,13 +25,13 @@ public class RosterManager {
      */
     public void run() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Roster Manager Running...");
+        System.out.println("Tuition Manager Running...");
         boolean stopProgram = false;
         while (!stopProgram) {                          //checks if the terminate command has been entered.
             stopProgram = processCommand(scanner);
         }
         scanner.close();
-        System.out.println("Roster Manager Terminated.");
+        System.out.println("Tuition Manager Terminated.");
     }
 
     /**
@@ -68,10 +70,51 @@ public class RosterManager {
             case "Q":                           //terminate command.
                 return true;
             default:                            //invalid command.
-                System.out.println(operationCode + " is an invalid command!");
-                scanner.nextLine();
-                return false;
+                return processAdditionCommands(scanner,operationCode); // continues to helper method to process additional commands
+                                                                       // in order to maintain clean coding practices.
         }
+    }
+
+    private boolean processAdditionCommands(Scanner scanner, String operationCode) {
+        switch (operationCode) {
+            case "LS":                          // load the student roster from an external file
+
+                return false;
+            case "AR":                          // add a Resident student, for example, AR John Doe 4/3/2003 CS 29
+
+                return false;
+            case "AN":                          // add a NonResident student, for example, AN Leo Jones 4/21/2006 ITI 20
+
+                return false;
+            case "AT":                          // add a Tristate student, for example, AT Emma Miller 2/28/2003 CS 15 NY
+
+                return false;
+            case "AI":                          // add an International student, for example, AI Oliver Chang 11/30/2000 BAIT 78 false
+
+                return false;
+            case "E":                           // enroll a student with the number of credits.
+
+                return false;
+            case "D":                           // drop a student from the enrollment list, for example, D Carl Brown 10/7/2004
+
+                return false;
+            case "S":                           // award the scholarship to a resident student, for example, S Roy Brooks 9/9/1999 10000
+
+                return false;
+            case "PE":                          // display the current enrollment list, based on their order in the array.
+
+                return false;
+            case "PT":                          // display the tuition due based on the credits enrolled, with the order in the enrollment array.
+
+                return false;
+            case "SE":                          // semester end to add the enrolled credits to the credit completed in the roster
+                // and print out the students who have already completed 120 credits or more.
+
+                return false;
+            default:
+                System.out.println(operationCode + " is an invalid command!");
+                return false;
+        } //39 lines, be careful ----------------------------------------------------------------------------------------------
     }
 
     /**
@@ -139,7 +182,7 @@ public class RosterManager {
      @param dob the student's date of birth.
      @param major the student's major.
      @param creditsCompleted the amount of credits completed by the student.
-     @return false it the student fails any checks, true otherwise.
+     @return false if the student fails any checks, true otherwise.
      */
     private boolean isAllowed (String dob, String major, String creditsCompleted){
         Date birthday = new Date(dob);
@@ -179,7 +222,7 @@ public class RosterManager {
      Helper method for isAllowed() method, checks if student is allowed age.
      @param today date object containing current day.
      @param dob the student's date of birth.
-     @return false it the student is too young, true otherwise.
+     @return false if the student is too young, true otherwise.
      */
     private boolean isAllowedAge (Date today, Date dob){
         int yearDifference = today.getYear() - dob.getYear();
@@ -203,7 +246,7 @@ public class RosterManager {
     /**
      Helper method for isAllowed() method, checks if a major is valid.
      @param major the major in question.
-     @return false it major is not in the Major Enum class, true if it is.
+     @return false if major is not in the Major Enum class, true if it is.
      */
     private boolean isValidMajor (String major){
         for (Major validMajor : Major.values()) {
