@@ -2,10 +2,10 @@ package studentroster;
 
 public class NonResident extends Student {
 
-    // extends student class
     public NonResident(Profile profile, String major,int creditCompleted){
         super( profile,  major, creditCompleted);
     }
+
     public double tuitionDue(int creditsEnrolled){
         double tuition;
         int exCred = (int)(creditsEnrolled - TuitionValues.ADDITIONAL_MAX.getValue());

@@ -20,16 +20,25 @@ public class Roster {
 
     /**
      Determine the index of a student in the roster if they are in it.
-     @param student student to look for.
+     @param profile profile of student to look for.
      @return the index of the desired student's location in the roster.
      */
-    private int find(Student student) {
+    private int find(Profile profile) {
         for(int i = 0; i < this.roster.length;i++){
-            if(student.equals(this.roster[i])){
+            if(profile.equals(this.roster[i].getProfile())){
                 return i;
             }
         }
         return (Constant.NOT_FOUND.getValue());
+    }
+
+    public Student findProfile(Profile profile) {
+        for (Student student : this.roster) {
+            if (student.getProfile().equals(profile)) {
+                return student;
+            }
+        }
+        return null;
     }
 
     /**
@@ -53,13 +62,30 @@ public class Roster {
 
     /**
      Adds a student to the roster if it is allowed. If it is full then calls grow().
-     @param student the student to add to the roster.
+     @param profile profile of the student to add to the roster.
+     @param major major of the student.
+     @param creditsCompleted amount of credits completed by the student.
+     @param studentType type of student that is being added.
+     @param state state of the student being added, if needed.
+     @param isAbroad whether the student is abroad.
      @return true if the student could be added, false otherwise.
      */
-    public boolean add(Student student) {
-        if (find(student) == Constant.NOT_FOUND.getValue()) {
-            this.roster[this.size] = student;
-            this.size++;
+    public boolean add(Profile profile, String major, int creditsCompleted, StudentType studentType, String state, boolean isAbroad) {
+        if (findProfile(profile) != null) {
+            switch (studentType) {
+                case RESIDENT :
+                    this.roster[this.size] = new Resident(profile, major, creditsCompleted);
+                    this.size++;
+                case NON_RESIDENT :
+                    this.roster[this.size] = new NonResident(profile, major, creditsCompleted);
+                    this.size++;
+                case TRI_STATE :
+                    this.roster[this.size] = new TriState(profile, major, creditsCompleted,state);
+                    this.size++;
+                case INTERNATIONAL :
+                    this.roster[this.size] = new International(profile, major, creditsCompleted,isAbroad);
+                    this.size++;
+            }
             if (this.size == this.roster.length) {
                 grow();
             }
@@ -71,11 +97,11 @@ public class Roster {
     /**
      Removes a student from the roster if they can be found.
      Maintains the order of the array after removal
-     @param student student to be removed.
+     @param profile profile of student to be removed.
      @return true if the student was removed, false otherwise.
      */
-    public boolean remove(Student student) {
-        int removePosition = find(student);
+    public boolean remove(Profile profile) {
+        int removePosition = find(profile);
         if(removePosition != Constant.NOT_FOUND.getValue()){
             for(int i = removePosition; i < this.size; i++ ){
                 this.roster[i] = this.roster[i + 1];
@@ -89,12 +115,12 @@ public class Roster {
 
     /**
      Checks if the student is currently in the roster.
-     @param student student to be looked for.
+     @param profile profile of student to be looked for.
      @return true if the student is in the roster, false otherwise.
      */
-    public boolean contains(Student student) {
-        for (Student value : this.roster) {
-            if (student.equals(value)) {
+    public boolean contains(Profile profile) {
+        for (Student student : this.roster) {
+            if (profile.equals(student.getProfile())) {
                 return true;
             }
         }
@@ -210,11 +236,11 @@ public class Roster {
 
     /**
      Replaces a students major if it passes the validity checks.
-     @param student student whose major should be replaced
+     @param profile profile of student whose major should be replaced
      @param major the major that it should be changed to.
      */
-    public boolean replaceMajor(Student student, String major){
-        int position = find(student);
+    public boolean replaceMajor(Profile profile, String major){
+        int position = find(profile);
         if(position != -1){
             if(this.roster[position].getMajor().toString().equals(major)){ System.out.println("first catch"); return false;}
             for (Major allowedMajor: Major.values()) {

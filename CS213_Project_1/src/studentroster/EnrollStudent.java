@@ -26,4 +26,8 @@ public class EnrollStudent {
     public int getCreditsEnrolled(){
         return this.creditsEnrolled;
     }
+
+    public void setCreditsEnrolled(int creditsEnrolled) {
+        this.creditsEnrolled = creditsEnrolled;
+    }
 }

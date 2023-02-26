@@ -43,9 +43,6 @@ public class TuitionManager {
         String operationCode = scanner.next();
 
         switch (operationCode) {
-            case "A":                           //add a student to the roster.
-                add(scanner.next(), scanner.next(), scanner.next(), scanner.next(), scanner.next());
-                return false;
             case "R":                           //remove a student from the roster.
                 remove(scanner.next(), scanner.next(), scanner.next());
                 return false;
@@ -81,28 +78,28 @@ public class TuitionManager {
 
                 return false;
             case "AR":                          // add a Resident student, for example, AR John Doe 4/3/2003 CS 29
-
+                add(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next(),StudentType.RESIDENT,"Unnecessary","Unnecessary");
                 return false;
             case "AN":                          // add a NonResident student, for example, AN Leo Jones 4/21/2006 ITI 20
-
+                add(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next(),StudentType.NON_RESIDENT,"Unnecessary","Unnecessary");
                 return false;
-            case "AT":                          // add a Tristate student, for example, AT Emma Miller 2/28/2003 CS 15 NY
-
+            case "AT":                          // add a Tri state student, for example, AT Emma Miller 2/28/2003 CS 15 NY
+                add(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next(),StudentType.TRI_STATE,scanner.next(),"Unnecessary");
                 return false;
             case "AI":                          // add an International student, for example, AI Oliver Chang 11/30/2000 BAIT 78 false
-
+                add(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next(),StudentType.INTERNATIONAL,scanner.next(), scanner.next());
                 return false;
-            case "E":                           // enroll a student with the number of credits.
-
+            case "E":                           // enroll a student with the number of credits. For example, E Carl Brown 10/7/2004 24
+                enroll(scanner.next(),scanner.next(),scanner.next(),Integer.parseInt(scanner.next()));
                 return false;
             case "D":                           // drop a student from the enrollment list, for example, D Carl Brown 10/7/2004
-
+                drop(scanner.next(),scanner.next(),scanner.next());
                 return false;
             case "S":                           // award the scholarship to a resident student, for example, S Roy Brooks 9/9/1999 10000
 
                 return false;
             case "PE":                          // display the current enrollment list, based on their order in the array.
-
+                this.enrollment.print();
                 return false;
             case "PT":                          // display the tuition due based on the credits enrolled, with the order in the enrollment array.
 
@@ -124,14 +121,24 @@ public class TuitionManager {
      @param dob the student's date of birth.
      @param major the student's major.
      */
-    private void add(String fname, String lname, String dob, String major, String creditsCompleted) {
+    private void add(String fname, String lname, String dob, String major, String creditsCompleted, StudentType studentType, String state, String isAbroad) {
         if (isAllowed(dob, major, creditsCompleted)) {              //checks if the student is allowed to be added
             Profile newProfile = new Profile(lname, fname, dob);
-            if (this.roster.add(new Student(newProfile, major, Integer.parseInt(creditsCompleted)))) {
+            if (this.roster.add(newProfile, major, Integer.parseInt(creditsCompleted), studentType,state, (isAbroad.equals("true")))) {
                 System.out.println(fname + " " + lname + " " + dob + " added to the Roster.");
             } else {
                 System.out.println(fname + " " + lname + " " + dob + " is already in the Roster.");
             }
+        }
+    }
+
+    private void enroll(String fname, String lname, String dob, int enrollCredits) {
+        Profile enrollProfile = new Profile(lname, fname, dob);
+        EnrollStudent enrollStudent = new EnrollStudent(enrollProfile, enrollCredits);
+        if(this.roster.contains(enrollProfile)){
+            this.enrollment.setEnrollCredits(enrollStudent, enrollCredits);
+        } else {
+            this.enrollment.add(enrollStudent);
         }
     }
 
@@ -143,14 +150,22 @@ public class TuitionManager {
      */
     private void remove(String fname, String lname, String dob) {
         Profile profile = new Profile(lname, fname, dob);
-        Student student = new Student(profile, Major.UNDEFINED.name(), Constant.UNDEFINED_CREDITS.getValue());
-        if (this.roster.remove(student)) {
+        if (this.roster.remove(profile)) {
             System.out.println(fname + " " + lname + " " + dob +" removed from the Roster.");
             return;
         }
         System.out.println(fname + " " + lname + " " + dob + " is not in the Roster.");
     }
 
+    private void drop(String fname, String lname, String dob) {
+        Profile dropProfile = new Profile(lname, fname, dob);
+        EnrollStudent dropStudent = new EnrollStudent(dropProfile, Constant.UNDEFINED_CREDITS.getValue());
+        if(this.enrollment.contains(dropStudent)) {
+            this.enrollment.remove(dropStudent);
+            //print removed message
+        }
+        //pint not in roster message
+    }
     /**
      Changes the major of a student in the roster given it passes validity checks.
      @param lname the student's last name.
@@ -163,10 +178,11 @@ public class TuitionManager {
             System.out.println("Major code invalid: " + major);
             return;
         }
+        // access the student based on the profile, then directly change that objects major with setMajor()
+
         Profile profile = new Profile(lname, fname, dob);
-        Student student = new Student(profile, Major.UNDEFINED.toString(), Constant.UNDEFINED_CREDITS.getValue());
-        if (this.roster.contains(student)) {                        //checks if the student is actually in the roster.
-            if(this.roster.replaceMajor(student,major)){            //checks if the major can/should be replaced.
+        if (this.roster.contains(profile)) {                        //checks if the student is actually in the roster.
+            if(this.roster.replaceMajor(profile,major)){            //checks if the major can/should be replaced.
                 System.out.println(fname + " " + lname + " " + dob + " major changed to " + major);
             } else {
                 System.out.println(fname + " " + lname + " " + dob + " already has this major");
