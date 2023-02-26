@@ -23,13 +23,22 @@ public class Roster {
      @param student student to look for.
      @return the index of the desired student's location in the roster.
      */
-    private int find(Student student) {
+    private int find(Profile profile) {
         for(int i = 0; i < this.roster.length;i++){
-            if(student.equals(this.roster[i])){
+            if(profile.equals(this.roster[i].getProfile())){
                 return i;
             }
         }
         return (Constant.NOT_FOUND.getValue());
+    }
+
+    public Student findProfile(Profile profile) {
+        for (Student student : this.roster) {
+            if (student.getProfile().equals(profile)) {
+                return student;
+            }
+        }
+        return null;
     }
 
     /**
@@ -56,10 +65,22 @@ public class Roster {
      @param student the student to add to the roster.
      @return true if the student could be added, false otherwise.
      */
-    public boolean add(Student student) {
-        if (find(student) == Constant.NOT_FOUND.getValue()) {
-            this.roster[this.size] = student;
-            this.size++;
+    public boolean add(Profile profile, String major, int creditsCompleted, StudentType studentType, String state, boolean isAbroad) {
+        if (findProfile(profile) != null) {
+            switch (studentType) {
+                case RESIDENT :
+                    this.roster[this.size] = new Resident(profile, major, creditsCompleted);
+                    this.size++;
+                case NON_RESIDENT :
+                    this.roster[this.size] = new NonResident(profile, major, creditsCompleted);
+                    this.size++;
+                case TRI_STATE :
+                    this.roster[this.size] = new TriState(profile, major, creditsCompleted,state);
+                    this.size++;
+                case INTERNATIONAL :
+                    this.roster[this.size] = new International(profile, major, creditsCompleted,isAbroad);
+                    this.size++;
+            }
             if (this.size == this.roster.length) {
                 grow();
             }
@@ -71,11 +92,11 @@ public class Roster {
     /**
      Removes a student from the roster if they can be found.
      Maintains the order of the array after removal
-     @param student student to be removed.
+     @param profile profile of student to be removed.
      @return true if the student was removed, false otherwise.
      */
-    public boolean remove(Student student) {
-        int removePosition = find(student);
+    public boolean remove(Profile profile) {
+        int removePosition = find(profile);
         if(removePosition != Constant.NOT_FOUND.getValue()){
             for(int i = removePosition; i < this.size; i++ ){
                 this.roster[i] = this.roster[i + 1];
