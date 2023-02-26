@@ -92,10 +92,10 @@ public class TuitionManager {
             case "AI":                          // add an International student, for example, AI Oliver Chang 11/30/2000 BAIT 78 false
                 addInternational(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next(), scanner.next());
                 return false;
-            case "E":                           // enroll a student with the number of credits. For example, E Carl Brown 10/7/2004 24
+            case "E":                           // enroll a student with the number of credits. For example, E John Doe 4/3/2003 24
                 enroll(scanner.next(),scanner.next(),scanner.next(),Integer.parseInt(scanner.next()));
                 return false;
-            case "D":                           // drop a student from the enrollment list, for example, D Carl Brown 10/7/2004
+            case "D":                           // drop a student from the enrollment list, for example, D John Doe 4/3/2003
                 drop(scanner.next(),scanner.next(),scanner.next());
                 return false;
             case "S":                           // award the scholarship to a resident student, for example, S Roy Brooks 9/9/1999 10000
@@ -135,6 +135,7 @@ public class TuitionManager {
     }
 
     private void addResident(String fname, String lname, String dob, String major, String creditsCompleted) {
+        //if(!enoughTokens(fname,lname,dob,major,creditsCompleted,"NA",StudentType.RESIDENT)){return;}
         Profile newProfile = new Profile(lname,fname,dob);
         if (!allowedCredits(creditsCompleted) || !isValidMajor(major)) { return;}
         Resident newResident = new Resident(newProfile, major, Integer.parseInt(creditsCompleted));
@@ -142,6 +143,7 @@ public class TuitionManager {
     }
 
     private void addNonResident(String fname, String lname, String dob, String major, String creditsCompleted) {
+        //if(!enoughTokens(fname,lname,dob,major,creditsCompleted,"NA",StudentType.NON_RESIDENT)){return;}
         Profile newProfile = new Profile(lname,fname,dob);
         if (!allowedCredits(creditsCompleted)) { return;}
         NonResident newNonResident = new NonResident(newProfile, major, Integer.parseInt(creditsCompleted));
@@ -149,6 +151,7 @@ public class TuitionManager {
     }
 
     private void addTriState(String fname, String lname, String dob, String major, String creditsCompleted,String state) {
+        //if(!enoughTokens(fname,lname,dob,major,creditsCompleted,"NA",StudentType.TRI_STATE)){return;}
         Profile newProfile = new Profile(lname,fname,dob);
         if (!allowedCredits(creditsCompleted)) { return;}
         TriState newTriState = new TriState(newProfile, major, Integer.parseInt(creditsCompleted), state);
@@ -156,20 +159,53 @@ public class TuitionManager {
     }
 
     private void addInternational(String fname, String lname, String dob, String major, String creditsCompleted, String isAbroad) {
+        //if(!enoughTokens(fname,lname,dob,major,creditsCompleted,isAbroad,StudentType.INTERNATIONAL)){return;}
         Profile newProfile = new Profile(lname,fname,dob);
         if (!allowedCredits(creditsCompleted)) { return;}
         International newInternational = new International(newProfile, major, Integer.parseInt(creditsCompleted), (isAbroad.equals("true")));
         add(newInternational);
     }
 
+    private boolean enoughTokens(String token1, String token2, String token3, String token4, String token5, String token6, StudentType type) {
+        switch (type){
+            case RESIDENT :
+                if((token1 == null) || (token2 == null) || (token3 == null) || (token4 == null) || (token5 == null)) {
+                    return false;
+                }
+            case NON_RESIDENT :
+                if((token1 == null) || (token2 == null) || (token3 == null) || (token4 == null) || (token5 == null)) {
+                    return false;
+                }
+            case TRI_STATE:
+                if((token1 == null) || (token2 == null) || (token3 == null) || (token4 == null) || (token5 == null) || (token6 == null)) {
+                    return false;
+                }
+            case INTERNATIONAL:
+                if((token1 == null) || (token2 == null) || (token3 == null) || (token4 == null) || (token5 == null)) {
+                    return false;
+                }
+        }
+        return true;
+    }
+
+
+
     private void enroll(String fname, String lname, String dob, int enrollCredits) {
         Profile enrollProfile = new Profile(lname, fname, dob);
         EnrollStudent enrollStudent = new EnrollStudent(enrollProfile, enrollCredits);
         Resident tempResident = new Resident(enrollProfile,Major.UNDEFINED.toString(),Constant.UNDEFINED_CREDITS.getValue());
-        if(this.roster.contains(tempResident)){
-            this.enrollment.setEnrollCredits(enrollStudent, enrollCredits);
-        } else {
+        if(this.enrollment.contains(enrollStudent)){
+            if(this.enrollment.isAlreadyTaking(enrollStudent,enrollCredits)) {
+                System.out.println(fname + " " + lname + " " + dob + " already is enrolled in " + enrollCredits + " credits.");
+            } else {
+                this.enrollment.setEnrollCredits(enrollStudent, enrollCredits);
+                System.out.println(fname + " " + lname + " " + dob + " changed credits enrolled to " + enrollCredits + ".");
+            }
+        } else if(this.roster.contains(tempResident)){
             this.enrollment.add(enrollStudent);
+            System.out.println(fname + " " + lname + " " + dob + " enrolled.");
+        } else {
+            System.out.println(fname + " " + lname + " " + dob + " is not in the roster.");
         }
     }
 
@@ -195,8 +231,9 @@ public class TuitionManager {
         if(this.enrollment.contains(dropStudent)) {
             this.enrollment.remove(dropStudent);
             System.out.println("dropped da student");
+            return;
         }
-        System.out.println("student not in da roster");
+        System.out.println("student not in da enrollment database");
     }
     /**
      Changes the major of a student in the roster given it passes validity checks.
