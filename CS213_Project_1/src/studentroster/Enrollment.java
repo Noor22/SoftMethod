@@ -51,9 +51,20 @@ public class Enrollment {
         return Constant.NOT_FOUND.getValue();
     }
 
+    public void setEnrollCredits(EnrollStudent enrollStudent, int enrollCredits) {
+        int position = find(enrollStudent);
+        this.enrollStudents[position].setCreditsEnrolled(enrollCredits);
+    }
+
     public void print() { //print the array as is without sorting
         for(int i = 0; i < this.size; i++){
             System.out.println(enrollStudents[i].toString());
+        }
+    }
+
+    public void printTuition() {
+        for(int i = 0; i < this.size; i++){
+
         }
     }
 }

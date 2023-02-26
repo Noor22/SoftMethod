@@ -89,17 +89,17 @@ public class TuitionManager {
             case "AI":                          // add an International student, for example, AI Oliver Chang 11/30/2000 BAIT 78 false
                 add(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next(),StudentType.INTERNATIONAL,scanner.next(), scanner.next());
                 return false;
-            case "E":                           // enroll a student with the number of credits.
-
+            case "E":                           // enroll a student with the number of credits. For example, E Carl Brown 10/7/2004 24
+                enroll(scanner.next(),scanner.next(),scanner.next(),Integer.parseInt(scanner.next()));
                 return false;
             case "D":                           // drop a student from the enrollment list, for example, D Carl Brown 10/7/2004
-
+                drop(scanner.next(),scanner.next(),scanner.next());
                 return false;
             case "S":                           // award the scholarship to a resident student, for example, S Roy Brooks 9/9/1999 10000
 
                 return false;
             case "PE":                          // display the current enrollment list, based on their order in the array.
-
+                this.enrollment.print();
                 return false;
             case "PT":                          // display the tuition due based on the credits enrolled, with the order in the enrollment array.
 
@@ -132,6 +132,16 @@ public class TuitionManager {
         }
     }
 
+    private void enroll(String fname, String lname, String dob, int enrollCredits) {
+        Profile enrollProfile = new Profile(lname, fname, dob);
+        EnrollStudent enrollStudent = new EnrollStudent(enrollProfile, enrollCredits);
+        if(this.roster.contains(enrollProfile)){
+            this.enrollment.setEnrollCredits(enrollStudent, enrollCredits);
+        } else {
+            this.enrollment.add(enrollStudent);
+        }
+    }
+
     /**
      Removes a student from the roster given their profile if it passes validity checks.
      @param lname the student's last name.
@@ -147,6 +157,15 @@ public class TuitionManager {
         System.out.println(fname + " " + lname + " " + dob + " is not in the Roster.");
     }
 
+    private void drop(String fname, String lname, String dob) {
+        Profile dropProfile = new Profile(lname, fname, dob);
+        EnrollStudent dropStudent = new EnrollStudent(dropProfile, Constant.UNDEFINED_CREDITS.getValue());
+        if(this.enrollment.contains(dropStudent)) {
+            this.enrollment.remove(dropStudent);
+            //print removed message
+        }
+        //pint not in roster message
+    }
     /**
      Changes the major of a student in the roster given it passes validity checks.
      @param lname the student's last name.
