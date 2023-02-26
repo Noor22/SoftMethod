@@ -8,4 +8,8 @@ public class Resident extends Student{
         this.scholarship = s;
     }
 
+    public double tuitionDue(int creditsEnrolled){
+
+    }
+
 }
