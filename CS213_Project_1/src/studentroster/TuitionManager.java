@@ -99,7 +99,7 @@ public class TuitionManager {
                 drop(scanner.next(),scanner.next(),scanner.next());
                 return false;
             case "S":                           // award the scholarship to a resident student, for example, S Roy Brooks 9/9/1999 10000
-
+                awardScholar(scanner.next(),scanner.next(),scanner.next(),scanner.next());
                 return false;
             case "PE":                          // display the current enrollment list, based on their order in the array.
                 this.enrollment.print();
@@ -188,8 +188,6 @@ public class TuitionManager {
         return true;
     }
 
-
-
     private void enroll(String fname, String lname, String dob, int enrollCredits) {
         Profile enrollProfile = new Profile(lname, fname, dob);
         EnrollStudent enrollStudent = new EnrollStudent(enrollProfile, enrollCredits);
@@ -235,6 +233,22 @@ public class TuitionManager {
         }
         System.out.println("student not in da enrollment database");
     }
+
+    private void awardScholar(String fname, String lname, String dob, String scholarShip) {
+        Profile profile = new Profile(lname, fname, dob);
+        Resident tempResident = new Resident(profile,Major.UNDEFINED.toString(),Constant.UNDEFINED_CREDITS.getValue());
+        if (this.roster.contains(tempResident)) {                        //checks if the student is actually in the roster.
+            if(this.roster.replaceScholar(tempResident,scholarShip)){            //checks if the major can/should be replaced.
+                System.out.println(fname + " " + lname + " " + dob + " awarded a scholarship of $" + scholarShip);
+            } else {
+                System.out.println(fname + " " + lname + " " + dob + " already has this scholarship");
+            }
+        } else {
+            System.out.println(fname + " " + lname + " " + dob + " is not in the Roster.");
+        }
+    }
+
+
     /**
      Changes the major of a student in the roster given it passes validity checks.
      @param lname the student's last name.
@@ -242,7 +256,7 @@ public class TuitionManager {
      @param dob the student's date of birth.
      @param major the student's major.
      */
-    private void changeMajor(String fname, String lname, String dob, String major){
+    private void changeMajor(String fname, String lname, String dob, String major) {
         if (!isValidMajor(major)) {                     //checks if the major is valid first.
             return;
         }
@@ -362,6 +376,15 @@ public class TuitionManager {
             System.out.println("School doesn't exist: " + school);
         }
     }
+
+//    private void printTuition() {
+//        if(!this.enrollment.isEmpty()){
+//            System.out.println("Print Tuition");
+//            this.roster.printTuition();
+//            System.out.println("Print Tuition End");
+//        }
+//        System.out.println("Enrollment is empty");
+//    }
 
     /**
       Prints error code saying that the roster is empty.

@@ -226,4 +226,14 @@ public class Roster {
         }
         return false;
     }
+
+    public boolean replaceScholar(Resident resident, String scholarShip) {
+        if(!resident.isResident()){
+            return false;
+        }
+        int position = find(resident);
+        Resident targetResident = (Resident) this.roster[position];
+        targetResident.setScholarship(Integer.parseInt(scholarShip));
+        return true;
+    }
 }

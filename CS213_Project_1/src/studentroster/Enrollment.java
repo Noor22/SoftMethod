@@ -61,7 +61,7 @@ public class Enrollment {
         this.enrollStudents[position].setCreditsEnrolled(enrollCredits);
     }
 
-    private boolean isEmpty() {
+    public boolean isEmpty() {
         return (this.size == 0);
     }
 
@@ -76,9 +76,4 @@ public class Enrollment {
         System.out.println("Enrollment is empty");
     }
 
-    public void printTuition() {
-        for(int i = 0; i < this.size; i++){
-
-        }
-    }
 }
