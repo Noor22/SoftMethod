@@ -43,9 +43,9 @@ public class TuitionManager {
         String operationCode = scanner.next();
 
         switch (operationCode) {
-//            case "A":                           //add a student to the roster.
-//                add(scanner.next(), scanner.next(), scanner.next(), scanner.next(), scanner.next());
-//                return false;
+            case "A":                           //add a student to the roster.
+                addResident(scanner.next(), scanner.next(), scanner.next(), scanner.next(), scanner.next());
+                return false;
             case "R":                           //remove a student from the roster.
                 remove(scanner.next(), scanner.next(), scanner.next());
                 return false;
@@ -122,7 +122,7 @@ public class TuitionManager {
      @param student student to be added.
      */
     private void add(Student student) {
-        if (isAllowed(student)) {              //checks if the student is allowed to be added
+        if (isAllowedDate(student)) {              //checks if the student is allowed to be added
             String fname = student.getProfile().getFname();
             String lname = student.getProfile().getLname();
             String dob = student.getProfile().getDob().toString();
@@ -136,7 +136,7 @@ public class TuitionManager {
 
     private void addResident(String fname, String lname, String dob, String major, String creditsCompleted) {
         Profile newProfile = new Profile(lname,fname,dob);
-        if (!allowedCredits(creditsCompleted)) { return;}
+        if (!allowedCredits(creditsCompleted) || !isValidMajor(major)) { return;}
         Resident newResident = new Resident(newProfile, major, Integer.parseInt(creditsCompleted));
         add(newResident);
     }
@@ -207,7 +207,6 @@ public class TuitionManager {
      */
     private void changeMajor(String fname, String lname, String dob, String major){
         if (!isValidMajor(major)) {                     //checks if the major is valid first.
-            System.out.println("Major code invalid: " + major);
             return;
         }
         // access the student based on the profile, then directly change that objects major with setMajor()
@@ -231,11 +230,10 @@ public class TuitionManager {
      @param student student's date of birth.
      @return false if the student fails any checks, true otherwise.
      */
-    private boolean isAllowed (Student student){
+    private boolean isAllowedDate(Student student){
         Date birthday = student.getProfile().getDob();
         Date today = new Date();
         String dob = birthday.toString();
-        String major = student.getMajor().toString();
         int creditsCompleted = student.getCredits();
         if (!birthday.isValid()) {                      //checks if birthday is a valid date.
             System.out.println("DOB invalid " + dob + " not a valid calendar date!");
@@ -247,10 +245,6 @@ public class TuitionManager {
         }
         if (!isAllowedAge(today, birthday)) {           //checks if birthday does not meet age requirement.
             System.out.println("DOB invalid: " + dob + " younger than 16 years old.");
-            return false;
-        }
-        if (!isValidMajor(major)) {                     //checks if the major is valid.
-            System.out.println("Major code invalid: " + major);
             return false;
         }
         return true;
@@ -307,6 +301,7 @@ public class TuitionManager {
                 return true;
             }
         }
+        System.out.println("Major code invalid: " + major);
         return false;
     }
 

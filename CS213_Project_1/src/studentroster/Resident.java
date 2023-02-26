@@ -3,7 +3,7 @@ public class Resident extends Student{
     private int scholarship;
 
     public Resident(Profile profile, String major,int creditCompleted){
-        super( profile,  major, creditCompleted);
+        super(profile, major, creditCompleted);
         int scholarship = 0;
     }
 
