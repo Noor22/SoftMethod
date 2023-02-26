@@ -5,7 +5,7 @@ package studentroster;
  and the amount of credits completed.
  @author Dylan Turner, Noor Hasan
  */
-public class Student implements Comparable<Student> {
+public abstract class Student implements Comparable<Student> {
     private Profile profile;
     private Major major;
     private int creditCompleted;
@@ -117,6 +117,14 @@ public class Student implements Comparable<Student> {
         return 1;
     }
 
+    public boolean isValid(int creditEnrolled){ //polymorphism
+        return true;
+    }
+
+    public abstract double tuitionDue(int creditsEnrolled); //polymorphism
+
+    public abstract boolean isResident(); //polymorphism
+
     /**
      Helper Method for Testbed Main.
      Creates two students from the test arrays and tests
@@ -178,7 +186,7 @@ public class Student implements Comparable<Student> {
                     }
             }
         }
-    }
+    }                       //METHOD TOO LONG, NEED TO MODULIZE.
 
     /**
        Testbed main for the compareTo() method.
