@@ -1,6 +1,6 @@
 package studentroster;
 
-public class NonResident {
+public class NonResident extends Student {
 
     // extends student class
 }
