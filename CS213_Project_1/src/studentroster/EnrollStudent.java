@@ -14,11 +14,16 @@ public class EnrollStudent {
         this.creditsEnrolled = creditsEnrolled;
     }
 
-    public boolean equals(){
-        return true;
+    public boolean equals(EnrollStudent otherEnroll){
+        return (this.profile == otherEnroll.profile
+                && this.creditsEnrolled == otherEnroll.creditsEnrolled);
     }
 
     public String toString(){
-        return "";
+        return (this.profile.toString() + " " + this.creditsEnrolled);
+    }
+
+    public int getCreditsEnrolled(){
+        return this.creditsEnrolled;
     }
 }

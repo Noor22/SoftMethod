@@ -43,10 +43,10 @@ public class TuitionManager {
         String operationCode = scanner.next();
 
         switch (operationCode) {
-            case "A":                           //add a member to the roster.
+            case "A":                           //add a student to the roster.
                 add(scanner.next(), scanner.next(), scanner.next(), scanner.next(), scanner.next());
                 return false;
-            case "R":                           //remove a member from the roster.
+            case "R":                           //remove a student from the roster.
                 remove(scanner.next(), scanner.next(), scanner.next());
                 return false;
             case "P":                           //prints the roster sorted by profile.

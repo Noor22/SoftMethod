@@ -9,10 +9,13 @@ public class Enrollment {
         this.size = 0;
     }
 
-    public void add(EnrollStudent enrollStudent){} //add to the end of array
-    //move the last one in the array to replace the deleting index position
+    public void add(EnrollStudent enrollStudent){ //add to the end of array. move the last one in the array to replace the deletting index position
 
-    public void remove(EnrollStudent enrollStudent){}
+    }
+
+    public void remove(EnrollStudent enrollStudent){
+
+    }
 
     public boolean contains(EnrollStudent enrollStudent){
         return true;
