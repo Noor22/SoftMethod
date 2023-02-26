@@ -1,13 +1,13 @@
 package studentroster;
 
 public class TriState extends NonResident{
-
-    // extends NonResident class
     private String state;
+
     public TriState(Profile profile, String major,int creditCompleted,String s){
         super( profile,  major, creditCompleted);
         this.state = s;
     }
+
     public double tuitionDue(int creditsEnrolled){
         double tuition;
         tuition = super.tuitionDue(creditsEnrolled); // uses nonresident tuition as a base

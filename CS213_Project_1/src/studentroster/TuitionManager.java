@@ -162,9 +162,8 @@ public class TuitionManager {
         // access the student based on the profile, then directly change that objects major with setMajor()
 
         Profile profile = new Profile(lname, fname, dob);
-        Student student = roster.findProfile(profile);
-        if (this.roster.contains(student)) {                        //checks if the student is actually in the roster.
-            if(this.roster.replaceMajor(student,major)){            //checks if the major can/should be replaced.
+        if (this.roster.contains(profile)) {                        //checks if the student is actually in the roster.
+            if(this.roster.replaceMajor(profile,major)){            //checks if the major can/should be replaced.
                 System.out.println(fname + " " + lname + " " + dob + " major changed to " + major);
             } else {
                 System.out.println(fname + " " + lname + " " + dob + " already has this major");

@@ -20,7 +20,7 @@ public class Roster {
 
     /**
      Determine the index of a student in the roster if they are in it.
-     @param student student to look for.
+     @param profile profile of student to look for.
      @return the index of the desired student's location in the roster.
      */
     private int find(Profile profile) {
@@ -62,7 +62,12 @@ public class Roster {
 
     /**
      Adds a student to the roster if it is allowed. If it is full then calls grow().
-     @param student the student to add to the roster.
+     @param profile profile of the student to add to the roster.
+     @param major major of the student.
+     @param creditsCompleted amount of credits completed by the student.
+     @param studentType type of student that is being added.
+     @param state state of the student being added, if needed.
+     @param isAbroad whether the student is abroad.
      @return true if the student could be added, false otherwise.
      */
     public boolean add(Profile profile, String major, int creditsCompleted, StudentType studentType, String state, boolean isAbroad) {
@@ -110,12 +115,12 @@ public class Roster {
 
     /**
      Checks if the student is currently in the roster.
-     @param student student to be looked for.
+     @param profile profile of student to be looked for.
      @return true if the student is in the roster, false otherwise.
      */
-    public boolean contains(Student student) {
-        for (Student value : this.roster) {
-            if (student.equals(value)) {
+    public boolean contains(Profile profile) {
+        for (Student student : this.roster) {
+            if (profile.equals(student.getProfile())) {
                 return true;
             }
         }
@@ -231,11 +236,11 @@ public class Roster {
 
     /**
      Replaces a students major if it passes the validity checks.
-     @param student student whose major should be replaced
+     @param profile profile of student whose major should be replaced
      @param major the major that it should be changed to.
      */
-    public boolean replaceMajor(Student student, String major){
-        int position = find(student);
+    public boolean replaceMajor(Profile profile, String major){
+        int position = find(profile);
         if(position != -1){
             if(this.roster[position].getMajor().toString().equals(major)){ System.out.println("first catch"); return false;}
             for (Major allowedMajor: Major.values()) {
