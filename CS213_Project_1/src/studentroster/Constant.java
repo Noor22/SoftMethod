@@ -23,6 +23,7 @@ public enum Constant {
     SEPTEMBER (9),
     NOVEMBER (11),
     INITIAL_SIZE (4),
+    ENROLLMENT_INITIAL (1),
     NOT_FOUND (-1),
     MINIMUM_AGE (16),
     UNDEFINED_CREDITS (0),
