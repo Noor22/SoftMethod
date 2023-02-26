@@ -43,6 +43,9 @@ public class TuitionManager {
         String operationCode = scanner.next();
 
         switch (operationCode) {
+//            case "A":                           //add a student to the roster.
+//                add(scanner.next(), scanner.next(), scanner.next(), scanner.next(), scanner.next());
+//                return false;
             case "R":                           //remove a student from the roster.
                 remove(scanner.next(), scanner.next(), scanner.next());
                 return false;
@@ -78,16 +81,16 @@ public class TuitionManager {
 
                 return false;
             case "AR":                          // add a Resident student, for example, AR John Doe 4/3/2003 CS 29
-                add(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next(),StudentType.RESIDENT,"Unnecessary","Unnecessary");
+                addResident(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next());
                 return false;
             case "AN":                          // add a NonResident student, for example, AN Leo Jones 4/21/2006 ITI 20
-                add(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next(),StudentType.NON_RESIDENT,"Unnecessary","Unnecessary");
+                addNonResident(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next());
                 return false;
             case "AT":                          // add a Tri state student, for example, AT Emma Miller 2/28/2003 CS 15 NY
-                add(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next(),StudentType.TRI_STATE,scanner.next(),"Unnecessary");
+                addTriState(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next());
                 return false;
             case "AI":                          // add an International student, for example, AI Oliver Chang 11/30/2000 BAIT 78 false
-                add(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next(),StudentType.INTERNATIONAL,scanner.next(), scanner.next());
+                addInternational(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next(), scanner.next());
                 return false;
             case "E":                           // enroll a student with the number of credits. For example, E Carl Brown 10/7/2004 24
                 enroll(scanner.next(),scanner.next(),scanner.next(),Integer.parseInt(scanner.next()));
@@ -116,15 +119,14 @@ public class TuitionManager {
 
     /**
      Adds a student to the Roster if it passes all the validity checks.
-     @param lname the student's last name.
-     @param fname the student's first name.
-     @param dob the student's date of birth.
-     @param major the student's major.
+     @param student student to be added.
      */
-    private void add(String fname, String lname, String dob, String major, String creditsCompleted, StudentType studentType, String state, String isAbroad) {
-        if (isAllowed(dob, major, creditsCompleted)) {              //checks if the student is allowed to be added
-            Profile newProfile = new Profile(lname, fname, dob);
-            if (this.roster.add(newProfile, major, Integer.parseInt(creditsCompleted), studentType,state, (isAbroad.equals("true")))) {
+    private void add(Student student) {
+        if (isAllowed(student)) {              //checks if the student is allowed to be added
+            String fname = student.getProfile().getFname();
+            String lname = student.getProfile().getLname();
+            String dob = student.getProfile().getDob().toString();
+            if (this.roster.add(student)) {
                 System.out.println(fname + " " + lname + " " + dob + " added to the Roster.");
             } else {
                 System.out.println(fname + " " + lname + " " + dob + " is already in the Roster.");
@@ -132,10 +134,39 @@ public class TuitionManager {
         }
     }
 
+    private void addResident(String fname, String lname, String dob, String major, String creditsCompleted) {
+        Profile newProfile = new Profile(lname,fname,dob);
+        if (!allowedCredits(creditsCompleted)) { return;}
+        Resident newResident = new Resident(newProfile, major, Integer.parseInt(creditsCompleted));
+        add(newResident);
+    }
+
+    private void addNonResident(String fname, String lname, String dob, String major, String creditsCompleted) {
+        Profile newProfile = new Profile(lname,fname,dob);
+        if (!allowedCredits(creditsCompleted)) { return;}
+        NonResident newNonResident = new NonResident(newProfile, major, Integer.parseInt(creditsCompleted));
+        add(newNonResident);
+    }
+
+    private void addTriState(String fname, String lname, String dob, String major, String creditsCompleted,String state) {
+        Profile newProfile = new Profile(lname,fname,dob);
+        if (!allowedCredits(creditsCompleted)) { return;}
+        TriState newTriState = new TriState(newProfile, major, Integer.parseInt(creditsCompleted), state);
+        add(newTriState);
+    }
+
+    private void addInternational(String fname, String lname, String dob, String major, String creditsCompleted, String isAbroad) {
+        Profile newProfile = new Profile(lname,fname,dob);
+        if (!allowedCredits(creditsCompleted)) { return;}
+        International newInternational = new International(newProfile, major, Integer.parseInt(creditsCompleted), (isAbroad.equals("true")));
+        add(newInternational);
+    }
+
     private void enroll(String fname, String lname, String dob, int enrollCredits) {
         Profile enrollProfile = new Profile(lname, fname, dob);
         EnrollStudent enrollStudent = new EnrollStudent(enrollProfile, enrollCredits);
-        if(this.roster.contains(enrollProfile)){
+        Resident tempResident = new Resident(enrollProfile,Major.UNDEFINED.toString(),Constant.UNDEFINED_CREDITS.getValue());
+        if(this.roster.contains(tempResident)){
             this.enrollment.setEnrollCredits(enrollStudent, enrollCredits);
         } else {
             this.enrollment.add(enrollStudent);
@@ -150,7 +181,8 @@ public class TuitionManager {
      */
     private void remove(String fname, String lname, String dob) {
         Profile profile = new Profile(lname, fname, dob);
-        if (this.roster.remove(profile)) {
+        Resident tempResident = new Resident(profile,Major.UNDEFINED.toString(),Constant.UNDEFINED_CREDITS.getValue());
+        if (this.roster.remove(tempResident)) {
             System.out.println(fname + " " + lname + " " + dob +" removed from the Roster.");
             return;
         }
@@ -162,9 +194,9 @@ public class TuitionManager {
         EnrollStudent dropStudent = new EnrollStudent(dropProfile, Constant.UNDEFINED_CREDITS.getValue());
         if(this.enrollment.contains(dropStudent)) {
             this.enrollment.remove(dropStudent);
-            //print removed message
+            System.out.println("dropped da student");
         }
-        //pint not in roster message
+        System.out.println("student not in da roster");
     }
     /**
      Changes the major of a student in the roster given it passes validity checks.
@@ -181,8 +213,9 @@ public class TuitionManager {
         // access the student based on the profile, then directly change that objects major with setMajor()
 
         Profile profile = new Profile(lname, fname, dob);
-        if (this.roster.contains(profile)) {                        //checks if the student is actually in the roster.
-            if(this.roster.replaceMajor(profile,major)){            //checks if the major can/should be replaced.
+        Resident tempResident = new Resident(profile,Major.UNDEFINED.toString(),Constant.UNDEFINED_CREDITS.getValue());
+        if (this.roster.contains(tempResident)) {                        //checks if the student is actually in the roster.
+            if(this.roster.replaceMajor(tempResident,major)){            //checks if the major can/should be replaced.
                 System.out.println(fname + " " + lname + " " + dob + " major changed to " + major);
             } else {
                 System.out.println(fname + " " + lname + " " + dob + " already has this major");
@@ -195,14 +228,15 @@ public class TuitionManager {
     /**
      Helper method for the add() method, checks if a student is allowed to
      be entered into the roster.
-     @param dob the student's date of birth.
-     @param major the student's major.
-     @param creditsCompleted the amount of credits completed by the student.
+     @param student student's date of birth.
      @return false if the student fails any checks, true otherwise.
      */
-    private boolean isAllowed (String dob, String major, String creditsCompleted){
-        Date birthday = new Date(dob);
+    private boolean isAllowed (Student student){
+        Date birthday = student.getProfile().getDob();
         Date today = new Date();
+        String dob = birthday.toString();
+        String major = student.getMajor().toString();
+        int creditsCompleted = student.getCredits();
         if (!birthday.isValid()) {                      //checks if birthday is a valid date.
             System.out.println("DOB invalid " + dob + " not a valid calendar date!");
             return false;
@@ -219,21 +253,24 @@ public class TuitionManager {
             System.out.println("Major code invalid: " + major);
             return false;
         }
-        if(!isNumeric(creditsCompleted)){               //checks if the credits are a number.
+        return true;
+    }
+
+    private boolean allowedCredits(String inputCredits) {
+        if(!isNumeric(inputCredits)){               //checks if the credits are a number.
             System.out.println("Credits completed invalid: not an integer!");
             return false;
         }
-        if (Integer.parseInt(creditsCompleted) < 0) {   //checks if the credits given are a valid amount.
+        if (Integer.parseInt(inputCredits) < 0) {   //checks if the credits given are a valid amount.
             System.out.println("Credits completed invalid: cannot be negative!");
             return false;
         }
-        if(!(Double.parseDouble(creditsCompleted) % 1 == 0)){   //checks if the credits are an integer.
+        if(!(Double.parseDouble(inputCredits) % 1 == 0)){   //checks if the credits are an integer.
             System.out.println("Credits completed invalid: not an integer!");
             return false;
         }
         return true;
     }
-
     /**
      Helper method for isAllowed() method, checks if student is allowed age.
      @param today date object containing current day.

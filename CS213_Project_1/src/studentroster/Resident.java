@@ -4,6 +4,7 @@ public class Resident extends Student{
 
     public Resident(Profile profile, String major,int creditCompleted){
         super( profile,  major, creditCompleted);
+        int scholarship = 0;
     }
 
     @Override

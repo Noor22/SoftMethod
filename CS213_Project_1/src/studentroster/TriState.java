@@ -3,9 +3,9 @@ package studentroster;
 public class TriState extends NonResident{
     private String state;
 
-    public TriState(Profile profile, String major,int creditCompleted,String s){
+    public TriState(Profile profile, String major,int creditCompleted,String state){
         super( profile,  major, creditCompleted);
-        this.state = s;
+        this.state = state;
     }
 
     public double tuitionDue(int creditsEnrolled){
