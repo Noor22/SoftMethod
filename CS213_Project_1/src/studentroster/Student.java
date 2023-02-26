@@ -136,14 +136,6 @@ public abstract class Student implements Comparable<Student> {
         return 1;
     }
 
-    public boolean isValid(int creditEnrolled){ //polymorphism
-        return true;
-    }
-
-    public abstract double tuitionDue(int creditsEnrolled); //polymorphism
-
-    public abstract boolean isResident(); //polymorphism
-
     /**
      Helper Method for Testbed Main.
      Creates two students from the test arrays and tests
