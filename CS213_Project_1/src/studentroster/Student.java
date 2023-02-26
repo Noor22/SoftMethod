@@ -86,13 +86,13 @@ public abstract class Student implements Comparable<Student> {
      * @param creditsEnrolled
      * @return
      */
-    public abstract double tuitionDue(int creditsEnrolled){};
+    public abstract double tuitionDue(int creditsEnrolled);
 
     /**
      *
      * @return
      */
-    public abstract boolean isResident(){};
+    public abstract boolean isResident();
     /**
      Converts the student to string representation.
      @return the string representation of this student.
