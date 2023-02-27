@@ -56,16 +56,16 @@ public class Enrollment {
         return Constant.NOT_FOUND.getValue();
     }
 
-    public EnrollStudent getEnrollStudent(EnrollStudent enrollStudent) {
-        for(int i = 0; i < this.size; i++) {
-            if(enrollStudents[i].equals(enrollStudent)){
-                System.out.println("gotem");
-                return enrollStudents[i];
-            }
-        }
-        System.out.println("poop null");
-        return null;
-    }
+//    public EnrollStudent getEnrollStudent(EnrollStudent enrollStudent) {
+//        for(int i = 0; i < this.size; i++) {
+//            if(enrollStudents[i].equals(enrollStudent)){
+//                System.out.println("gotem");
+//                return enrollStudents[i];
+//            }
+//        }
+//        System.out.println("poop null");
+//        return null;
+//    }
 
     public void setEnrollCredits(EnrollStudent enrollStudent, int enrollCredits) {
         int position = find(enrollStudent);

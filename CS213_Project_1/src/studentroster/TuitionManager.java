@@ -149,11 +149,7 @@ public class TuitionManager {
         Profile newProfile = new Profile(lname,fname,dob);
         if (!allowedCredits(creditsCompleted) || !isValidMajor(major)) { return;}
         Resident newResident = new Resident(newProfile, major, Integer.parseInt(creditsCompleted));
-        if(newResident.isValid(Integer.parseInt(creditsCompleted))) {
-            add(newResident);
-        } else{
-            System.out.println("That is not a valid amount of credits for a Resident");
-        }
+        add(newResident);
     }
 
     private void addNonResident(String fname, String lname, String dob, String major, String creditsCompleted) {
@@ -161,11 +157,7 @@ public class TuitionManager {
         Profile newProfile = new Profile(lname,fname,dob);
         if (!allowedCredits(creditsCompleted)) { return;}
         NonResident newNonResident = new NonResident(newProfile, major, Integer.parseInt(creditsCompleted));
-        if(newNonResident.isValid(Integer.parseInt(creditsCompleted))) {
-            add(newNonResident);
-        } else{
-            System.out.println("That is not a valid amount of credits for a Non-Resident");
-        }
+        add(newNonResident);
     }
 
     private void addTriState(String fname, String lname, String dob, String major, String creditsCompleted,String state) {
@@ -173,11 +165,7 @@ public class TuitionManager {
         Profile newProfile = new Profile(lname,fname,dob);
         if (!allowedCredits(creditsCompleted)) { return;}
         TriState newTriState = new TriState(newProfile, major, Integer.parseInt(creditsCompleted), state);
-        if(newTriState.isValid(Integer.parseInt(creditsCompleted))) {
-            add(newTriState);
-        } else{
-            System.out.println("That is not a valid amount of credits for a Tri-State Student");
-        }
+        add(newTriState);
     }
 
     private void addInternational(String fname, String lname, String dob, String major, String creditsCompleted, String isAbroad) {
@@ -185,11 +173,7 @@ public class TuitionManager {
         Profile newProfile = new Profile(lname,fname,dob);
         if (!allowedCredits(creditsCompleted)) { return;}
         International newInternational = new International(newProfile, major, Integer.parseInt(creditsCompleted), (isAbroad.equals("true")));
-        if(newInternational.isValid(Integer.parseInt(creditsCompleted))) {
-            add(newInternational);
-        } else{
-            System.out.println("That is not a valid amount of credits for an International Student");
-        }
+        add(newInternational);
     }
 
     private boolean enoughTokens(String token1, String token2, String token3, String token4, String token5, String token6, StudentType type) {
@@ -217,7 +201,7 @@ public class TuitionManager {
     private void enroll(String fname, String lname, String dob, int enrollCredits) {
         Profile enrollProfile = new Profile(lname, fname, dob);
         EnrollStudent enrollStudent = new EnrollStudent(enrollProfile, enrollCredits);
-        Resident tempResident = new Resident(enrollProfile,Major.UNDEFINED.toString(),Constant.UNDEFINED_CREDITS.getValue());
+//        Resident tempResident = new Resident(enrollProfile,Major.UNDEFINED.toString(),Constant.UNDEFINED_CREDITS.getValue());
         if(this.enrollment.contains(enrollStudent)){
             if(this.enrollment.isAlreadyTaking(enrollStudent,enrollCredits)) {
                 System.out.println(fname + " " + lname + " " + dob + " already is enrolled in " + enrollCredits + " credits.");
@@ -225,9 +209,13 @@ public class TuitionManager {
                 this.enrollment.setEnrollCredits(enrollStudent, enrollCredits);
                 System.out.println(fname + " " + lname + " " + dob + " changed credits enrolled to " + enrollCredits + ".");
             }
-        } else if(this.roster.contains(tempResident)){
-            this.enrollment.add(enrollStudent);
-            System.out.println(fname + " " + lname + " " + dob + " enrolled.");
+        } else if(this.roster.contains(enrollProfile)){
+            if(this.roster.getStudent(enrollProfile).isValid(enrollCredits)){
+                this.enrollment.add(enrollStudent);
+                System.out.println(fname + " " + lname + " " + dob + " enrolled.");
+            }else{
+                System.out.println(enrollCredits + " is not a valid amount of credits for that type of student.");
+            }
         } else {
             System.out.println(fname + " " + lname + " " + dob + " is not in the roster.");
         }

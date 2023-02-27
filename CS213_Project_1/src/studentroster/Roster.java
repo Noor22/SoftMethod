@@ -112,6 +112,15 @@ public class Roster {
         return false;
     }
 
+    public boolean contains(Profile profile) {
+        for (Student value : this.roster) {
+            if (value.getProfile().equals(profile)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      Helper method for the print() methods below.
      Prints out the roster sorted as it currently is.
