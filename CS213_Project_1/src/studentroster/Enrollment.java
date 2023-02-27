@@ -95,4 +95,16 @@ public class Enrollment {
             System.out.println(currentStudent.getProfile().toString() + "owes " + tuition);
         }
     }
+
+    public void semesterEnd(Roster roster) {
+        int creditsEnrolled;
+        for(EnrollStudent enrolled : this.enrollStudents) {
+            Student currentStudent = roster.getStudent(enrolled.getProfile());
+            creditsEnrolled = enrolled.getCreditsEnrolled();
+            currentStudent.addCredits(creditsEnrolled);
+            if(currentStudent.getCredits() >= 120){
+                System.out.println(currentStudent + " has graduated with " + currentStudent.getCredits());
+            }
+        }
+    }
 }

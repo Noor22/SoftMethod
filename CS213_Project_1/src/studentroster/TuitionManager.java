@@ -107,8 +107,8 @@ public class TuitionManager {
             case "PT":                          // display the tuition due based on the credits enrolled, with the order in the enrollment array.
                 this.enrollment.printTuition(this.roster);
                 return false;
-            case "SE":                          // semester end to add the enrolled credits to the credit completed in the roster
-                // and print out the students who have already completed 120 credits or more.
+            case "SE":                                                      // semester end to add the enrolled credits to the credit completed in the roster
+                this.enrollment.semesterEnd(this.roster);                   // and print out the students who have already completed 120 credits or more.
                 return false;
             default:
                 System.out.println(operationCode + " is an invalid command!");

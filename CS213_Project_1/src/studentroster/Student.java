@@ -74,6 +74,9 @@ public abstract class Student implements Comparable<Student> {
         return this.creditCompleted;
     }
 
+    public void addCredits(int additionalCredits) {
+        this.creditCompleted += additionalCredits;
+    }
     /**
      *
      * @param creditEnrolled
