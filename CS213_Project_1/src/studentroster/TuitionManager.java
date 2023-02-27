@@ -149,7 +149,11 @@ public class TuitionManager {
         Profile newProfile = new Profile(lname,fname,dob);
         if (!allowedCredits(creditsCompleted) || !isValidMajor(major)) { return;}
         Resident newResident = new Resident(newProfile, major, Integer.parseInt(creditsCompleted));
-        add(newResident);
+        if(newResident.isValid(Integer.parseInt(creditsCompleted))) {
+            add(newResident);
+        } else{
+            System.out.println("That is not a valid amount of credits for a Resident");
+        }
     }
 
     private void addNonResident(String fname, String lname, String dob, String major, String creditsCompleted) {
@@ -157,7 +161,11 @@ public class TuitionManager {
         Profile newProfile = new Profile(lname,fname,dob);
         if (!allowedCredits(creditsCompleted)) { return;}
         NonResident newNonResident = new NonResident(newProfile, major, Integer.parseInt(creditsCompleted));
-        add(newNonResident);
+        if(newNonResident.isValid(Integer.parseInt(creditsCompleted))) {
+            add(newNonResident);
+        } else{
+            System.out.println("That is not a valid amount of credits for a Non-Resident");
+        }
     }
 
     private void addTriState(String fname, String lname, String dob, String major, String creditsCompleted,String state) {
@@ -165,7 +173,11 @@ public class TuitionManager {
         Profile newProfile = new Profile(lname,fname,dob);
         if (!allowedCredits(creditsCompleted)) { return;}
         TriState newTriState = new TriState(newProfile, major, Integer.parseInt(creditsCompleted), state);
-        add(newTriState);
+        if(newTriState.isValid(Integer.parseInt(creditsCompleted))) {
+            add(newTriState);
+        } else{
+            System.out.println("That is not a valid amount of credits for a Tri-State Student");
+        }
     }
 
     private void addInternational(String fname, String lname, String dob, String major, String creditsCompleted, String isAbroad) {
@@ -173,7 +185,11 @@ public class TuitionManager {
         Profile newProfile = new Profile(lname,fname,dob);
         if (!allowedCredits(creditsCompleted)) { return;}
         International newInternational = new International(newProfile, major, Integer.parseInt(creditsCompleted), (isAbroad.equals("true")));
-        add(newInternational);
+        if(newInternational.isValid(Integer.parseInt(creditsCompleted))) {
+            add(newInternational);
+        } else{
+            System.out.println("That is not a valid amount of credits for an International Student");
+        }
     }
 
     private boolean enoughTokens(String token1, String token2, String token3, String token4, String token5, String token6, StudentType type) {
