@@ -19,7 +19,7 @@ public class EnrollStudent {
     }
 
     public String toString(){
-        return (this.profile.toString() + " " + this.creditsEnrolled);
+        return (this.profile.toString());
     }
 
     public int getCreditsEnrolled(){

@@ -30,4 +30,14 @@ public class NonResident extends Student {
     public boolean isResident() {
         return false;
     }
+
+    @Override
+    public String getArea() {
+        return "";
+    }
+
+    @Override
+    public String getType() {
+        return "(Non-Resident)";
+    }
 }

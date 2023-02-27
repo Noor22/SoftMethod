@@ -2,6 +2,7 @@ package studentroster;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 /**
  This is user interface that reads terminal commands and displays the results.
@@ -26,98 +27,126 @@ public class TuitionManager {
      terminated by quit command "Q".
      */
     public void run() {
-        Scanner scanner = new Scanner(System.in);
+        Scanner lineScanner = new Scanner(System.in);
         System.out.println("Tuition Manager Running...");
         boolean stopProgram = false;
         while (!stopProgram) {                          //checks if the terminate command has been entered.
-            stopProgram = processCommand(scanner);
+            String commandLine = lineScanner.nextLine();
+           // System.out.println("this is the commandLine: " + commandLine);
+            stopProgram = processCommand(commandLine);
         }
-        scanner.close();
+        lineScanner.close();
         System.out.println("Tuition Manager Terminated.");
     }
 
     /**
        Helper method for run(), that stores and runs all valid commands.
-       @param scanner object to receive user input.
+       @param commandLine object to receive user input.
        @return true if terminate command given, false otherwise.
      */
-    private boolean processCommand(Scanner scanner) {
+    private boolean processCommand(String commandLine) {
+        Scanner scanner = new Scanner(commandLine);
+        StringTokenizer tokenizer = new StringTokenizer(commandLine);
+        int tokenAmount = tokenizer.countTokens();
+       // System.out.println("this is the tokenAmount: " + tokenAmount);
+        if(tokenAmount == 0) {return false;}
         String operationCode = scanner.next();
+      //  System.out.println("this is the operationCode: " + operationCode);
 
         switch (operationCode) {
             case "A":                           //add a student to the roster.
-                addResident(scanner.next(), scanner.next(), scanner.next(), scanner.next(), scanner.next());
+                if(isRightAmount(Constant.SIX_REQUIRED,tokenAmount))
+                    addResident(scanner.next(), scanner.next(), scanner.next(), scanner.next(), scanner.next());
                 return false;
             case "R":                           //remove a student from the roster.
-                remove(scanner.next(), scanner.next(), scanner.next());
+                if(isRightAmount(Constant.FOUR_REQUIRED,tokenAmount))
+                    remove(scanner.next(), scanner.next(), scanner.next());
                 return false;
             case "P":                           //prints the roster sorted by profile.
-                if(!this.roster.isEmpty()){roster.print(); return false;}
+                if(isRightAmount(Constant.ONE_REQUIRED,tokenAmount))
+                    if(!this.roster.isEmpty()){roster.print(); return false;}
                 rosterEmpty();
                 return false;
             case "PS":                          //prints the roster sorted by standing.
-                if(!this.roster.isEmpty()){roster.printByStanding(); return false;}
-                rosterEmpty();
+                if(isRightAmount(Constant.ONE_REQUIRED,tokenAmount)){
+                    if(!this.roster.isEmpty()){roster.printByStanding(); return false;}
+                    rosterEmpty();
+                }
                 return false;
             case "PC":                          //prints the roster sorted by major.
-                if(!this.roster.isEmpty()){roster.printBySchoolMajor(); return false;}
-                rosterEmpty();
+                if(isRightAmount(Constant.ONE_REQUIRED,tokenAmount)){
+                    if(!this.roster.isEmpty()){roster.printBySchoolMajor(); return false;}
+                    rosterEmpty();
+                }
                 return false;
             case "L":                           //lists all students under a specified school.
-                printList(scanner.next().toUpperCase());
+                if(isRightAmount(Constant.TWO_REQUIRED,tokenAmount))
+                    printList(scanner.next().toUpperCase());
                 return false;
             case "C":                           //changes the major of a specified student.
-                changeMajor(scanner.next(), scanner.next(), scanner.next(), scanner.next());
+                if(isRightAmount(Constant.FIVE_REQUIRED,tokenAmount))
+                    changeMajor(scanner.next(), scanner.next(), scanner.next(), scanner.next());
                 return false;
             case "Q":                           //terminate command.
-                return true;
+                if(isRightAmount(Constant.ONE_REQUIRED,tokenAmount))
+                    return true;
             default:                            //invalid command.
-                return processAdditionalCommands(scanner,operationCode); // continues to helper method to process additional commands
+                return processAdditionalCommands(scanner,operationCode,tokenAmount); // continues to helper method to process additional commands
                                                                        // in order to maintain clean coding practices.
         }
     }
 
-    private boolean processAdditionalCommands(Scanner scanner, String operationCode) {
+    private boolean processAdditionalCommands(Scanner scanner,String operationCode, int tokenAmount) {
         switch (operationCode) {
             case "E":                           // enroll a student with the number of credits. For example, E John Doe 4/3/2003 24
-                enroll(scanner.next(),scanner.next(),scanner.next(),Integer.parseInt(scanner.next()));
+                if(isRightAmount(Constant.FIVE_REQUIRED,tokenAmount))
+                    enroll(scanner.next(),scanner.next(),scanner.next(),scanner.next());
                 return false;
             case "D":                           // drop a student from the enrollment list, for example, D John Doe 4/3/2003
-                drop(scanner.next(),scanner.next(),scanner.next());
+                if(isRightAmount(Constant.FOUR_REQUIRED,tokenAmount))
+                    drop(scanner.next(),scanner.next(),scanner.next());
                 return false;
             case "S":                           // award the scholarship to a resident student, for example, S Roy Brooks 9/9/1999 10000
-                awardScholar(scanner.next(),scanner.next(),scanner.next(),scanner.next());
+                if(isRightAmount(Constant.FIVE_REQUIRED,tokenAmount))
+                    awardScholar(scanner.next(),scanner.next(),scanner.next(),scanner.next());
                 return false;
             case "PE":                          // display the current enrollment list, based on their order in the array.
-                this.enrollment.print();
+                if(isRightAmount(Constant.ONE_REQUIRED,tokenAmount))
+                    this.enrollment.print();
                 return false;
             case "PT":                          // display the tuition due based on the credits enrolled, with the order in the enrollment array.
-                this.enrollment.printTuition(this.roster);
+                if(isRightAmount(Constant.ONE_REQUIRED,tokenAmount))
+                    this.enrollment.printTuition(this.roster);
                 return false;
             case "SE":                                                      // semester end to add the enrolled credits to the credit completed in the roster
-                this.enrollment.semesterEnd(this.roster);                   // and print out the students who have already completed 120 credits or more.
+                if(isRightAmount(Constant.ONE_REQUIRED,tokenAmount))
+                    this.enrollment.semesterEnd(this.roster);                   // and print out the students who have already completed 120 credits or more.
                 return false;
             default:
-                return processAddCommands(scanner,operationCode);
+                return processAddCommands(scanner,operationCode,tokenAmount);
         }
     }
-    private boolean processAddCommands(Scanner scanner, String operationCode){
+    private boolean processAddCommands(Scanner scanner,String operationCode, int tokenAmount){
         switch(operationCode){
-
             case "LS":                          // load the student roster from an external file
-                readFile();
+                if(isRightAmount(Constant.TWO_REQUIRED,tokenAmount))
+                    readFile(scanner.next());
                 return false;
             case "AR":                          // add a Resident student, for example, AR John Doe 4/3/2003 CS 29
-                addResident(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next());
+                if(isRightAmount(Constant.SIX_REQUIRED,tokenAmount))
+                    addResident(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next());
                 return false;
             case "AN":                          // add a NonResident student, for example, AN Leo Jones 4/21/2006 ITI 20
-                addNonResident(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next());
+                if(isRightAmount(Constant.SIX_REQUIRED,tokenAmount))
+                    addNonResident(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next());
                 return false;
             case "AT":                          // add a Tri state student, for example, AT Emma Miller 2/28/2003 CS 15 NY
-                addTriState(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next());
+                if(hasState(tokenAmount))
+                    addTriState(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next());
                 return false;
             case "AI":                          // add an International student, for example, AI Oliver Chang 11/30/2000 BAIT 78 false
-                addInternational(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next(), scanner.next());
+                if(hasAbroad(scanner,tokenAmount))
+                    addInternational(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next(), scanner.next());
                 return false;
             default:
                 System.out.println(operationCode + " is an invalid command!");
@@ -125,16 +154,54 @@ public class TuitionManager {
         }
     }
 
-    private void readFile() {
+    private boolean hasAbroad(Scanner scanner, int tokenAmount) {
+        if(Constant.SEVEN_REQUIRED.getValue() == tokenAmount){
+            return true;
+        } else if (Constant.SIX_REQUIRED.getValue() == tokenAmount){
+            addInternational(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next());
+            return false;
+        } else {
+            System.out.println("Missing data in line command.");
+            return false;
+        }
+    }
+
+    private boolean isRightAmount(Constant requiredAmount, int tokenAmount){
+        if(requiredAmount.getValue() == tokenAmount){
+            return true;
+        } else {
+            System.out.println("Missing data in line command.");
+            return false;
+        }
+    }
+
+    private boolean hasState(int tokenAmount){
+        if(Constant.SEVEN_REQUIRED.getValue() == tokenAmount){
+            return true;
+        } else if (Constant.SIX_REQUIRED.getValue() == tokenAmount){
+            System.out.println("Missing the state code.");
+            return false;
+        } else {
+            System.out.println("Missing data in line command.");
+        }
+        return false;
+    }
+
+    private void readFile(String fileName) {
         try {
-            File classSchedule = new File("studentList.txt");
+            File classSchedule = new File(fileName);
             Scanner fileScanner = new Scanner(classSchedule);
-            fileScanner.useDelimiter(",|\n");
-            System.out.println("Student Roster loaded");
-            while (fileScanner.hasNext()){
-                processAddCommands(fileScanner, "A" + fileScanner.next());
+            String lineCommand;
+            System.out.println("Students loaded to the roster.");
+            while (fileScanner.hasNextLine()){
+                lineCommand = fileScanner.nextLine();
+                Scanner lineScanner = new Scanner(lineCommand);
+                lineScanner.useDelimiter(",|\n");
+                StringTokenizer tokenizer = new StringTokenizer(lineCommand,",");
+                int tokenAmount = tokenizer.countTokens();
+                String operationCode = "A" + lineScanner.next();
+                processAddCommands(lineScanner, operationCode,tokenAmount);
             }
-            System.out.println("end of student list");
             fileScanner.close();
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
@@ -159,7 +226,6 @@ public class TuitionManager {
     }
 
     private void addResident(String fname, String lname, String dob, String major, String creditsCompleted) {
-        //if(!enoughTokens(fname,lname,dob,major,creditsCompleted,"NA",StudentType.RESIDENT)){return;}
         Profile newProfile = new Profile(lname,fname,dob);
         if (!allowedCredits(creditsCompleted) || !isValidMajor(major)) { return;}
         Resident newResident = new Resident(newProfile, major, Integer.parseInt(creditsCompleted));
@@ -167,7 +233,6 @@ public class TuitionManager {
     }
 
     private void addNonResident(String fname, String lname, String dob, String major, String creditsCompleted) {
-        //if(!enoughTokens(fname,lname,dob,major,creditsCompleted,"NA",StudentType.NON_RESIDENT)){return;}
         Profile newProfile = new Profile(lname,fname,dob);
         if (!allowedCredits(creditsCompleted)) { return;}
         NonResident newNonResident = new NonResident(newProfile, major, Integer.parseInt(creditsCompleted));
@@ -175,7 +240,10 @@ public class TuitionManager {
     }
 
     private void addTriState(String fname, String lname, String dob, String major, String creditsCompleted,String state) {
-        //if(!enoughTokens(fname,lname,dob,major,creditsCompleted,"NA",StudentType.TRI_STATE)){return;}
+        if(!state.equalsIgnoreCase("NY")  && !state.equalsIgnoreCase("NJ") && !state.equalsIgnoreCase("CT")){
+            System.out.println(state + ": Invalid state code.");
+            return;
+        }
         Profile newProfile = new Profile(lname,fname,dob);
         if (!allowedCredits(creditsCompleted)) { return;}
         TriState newTriState = new TriState(newProfile, major, Integer.parseInt(creditsCompleted), state);
@@ -183,55 +251,48 @@ public class TuitionManager {
     }
 
     private void addInternational(String fname, String lname, String dob, String major, String creditsCompleted, String isAbroad) {
-        //if(!enoughTokens(fname,lname,dob,major,creditsCompleted,isAbroad,StudentType.INTERNATIONAL)){return;}
         Profile newProfile = new Profile(lname,fname,dob);
         if (!allowedCredits(creditsCompleted)) { return;}
         International newInternational = new International(newProfile, major, Integer.parseInt(creditsCompleted), (isAbroad.equals("true")));
         add(newInternational);
     }
 
-    private boolean enoughTokens(String token1, String token2, String token3, String token4, String token5, String token6, StudentType type) {
-        switch (type){
-            case RESIDENT :
-                if((token1 == null) || (token2 == null) || (token3 == null) || (token4 == null) || (token5 == null)) {
-                    return false;
-                }
-            case NON_RESIDENT :
-                if((token1 == null) || (token2 == null) || (token3 == null) || (token4 == null) || (token5 == null)) {
-                    return false;
-                }
-            case TRI_STATE:
-                if((token1 == null) || (token2 == null) || (token3 == null) || (token4 == null) || (token5 == null) || (token6 == null)) {
-                    return false;
-                }
-            case INTERNATIONAL:
-                if((token1 == null) || (token2 == null) || (token3 == null) || (token4 == null) || (token5 == null)) {
-                    return false;
-                }
-        }
-        return true;
+    private void addInternational(String fname, String lname, String dob, String major, String creditsCompleted) {
+        Profile newProfile = new Profile(lname,fname,dob);
+        if (!allowedCredits(creditsCompleted)) { return;}
+        International newInternational = new International(newProfile, major, Integer.parseInt(creditsCompleted), false);
+        add(newInternational);
     }
-
-    private void enroll(String fname, String lname, String dob, int enrollCredits) {
+    private void enroll(String fname, String lname, String dob, String enrollCredits) {
+        if(!isNumeric(enrollCredits)){
+            System.out.println("Credits enrolled is not an integer.");
+            return;
+        }
+        int enrollCreditsInt = Integer.parseInt(enrollCredits);
         Profile enrollProfile = new Profile(lname, fname, dob);
-        EnrollStudent enrollStudent = new EnrollStudent(enrollProfile, enrollCredits);
-//        Resident tempResident = new Resident(enrollProfile,Major.UNDEFINED.toString(),Constant.UNDEFINED_CREDITS.getValue());
+        EnrollStudent enrollStudent = new EnrollStudent(enrollProfile, enrollCreditsInt);
         if(this.enrollment.contains(enrollStudent)){
-            if(this.enrollment.isAlreadyTaking(enrollStudent,enrollCredits)) {
-                System.out.println(fname + " " + lname + " " + dob + " already is enrolled in " + enrollCredits + " credits.");
-            } else {
-                this.enrollment.setEnrollCredits(enrollStudent, enrollCredits);
-                System.out.println(fname + " " + lname + " " + dob + " changed credits enrolled to " + enrollCredits + ".");
+            if(this.enrollment.isAlreadyTaking(enrollStudent,enrollCreditsInt)) {
+                System.out.println(fname + " " + lname + " " + dob + " already is enrolled in " + enrollCreditsInt + " credits.");
+            } else{
+                Student student = this.roster.getStudent(enrollProfile);
+                if(student.isValid(enrollCreditsInt)){
+                    this.enrollment.setEnrollCredits(enrollStudent, enrollCreditsInt);
+                    System.out.println(fname + " " + lname + " " + dob + " enrolled " + enrollCreditsInt + " credits.");
+                }else{
+                    System.out.println(student.getType() + " " + enrollCreditsInt + ": invalid credit hours.");
+                }
             }
         } else if(this.roster.contains(enrollProfile)){
-            if(this.roster.getStudent(enrollProfile).isValid(enrollCredits)){
+            Student student = this.roster.getStudent(enrollProfile);
+            if(student.isValid(enrollCreditsInt)){
                 this.enrollment.add(enrollStudent);
-                System.out.println(fname + " " + lname + " " + dob + " enrolled.");
+                System.out.println(fname + " " + lname + " " + dob + " enrolled " + enrollCreditsInt + " credits.");
             }else{
-                System.out.println(enrollCredits + " is not a valid amount of credits for that type of student.");
+                System.out.println(student.getType() + " " + enrollCreditsInt + ": invalid credit hours.");
             }
         } else {
-            System.out.println(fname + " " + lname + " " + dob + " is not in the roster.");
+            System.out.println("Cannot enroll: " + fname + " " + lname + " " + dob + " is not in the roster.");
         }
     }
 
@@ -253,29 +314,54 @@ public class TuitionManager {
 
     private void drop(String fname, String lname, String dob) {
         Profile dropProfile = new Profile(lname, fname, dob);
-        EnrollStudent dropStudent = new EnrollStudent(dropProfile, Constant.UNDEFINED_CREDITS.getValue());
-        if(this.enrollment.contains(dropStudent)) {
-            this.enrollment.remove(dropStudent);
-            System.out.println("dropped da student");
-            return;
+        EnrollStudent dropStudent = this.enrollment.getEnrollStudent(dropProfile);
+        if (!(dropStudent == null)) {
+            if (this.enrollment.contains(dropStudent)) {
+                this.enrollment.remove(dropStudent);
+                System.out.println(fname + " " + lname + " " + dob + " dropped.");
+                return;
+            }
         }
-        System.out.println("student not in da enrollment database");
+        System.out.println(fname + " " + lname + " " + dob + " is not enrolled.");
     }
 
     private void awardScholar(String fname, String lname, String dob, String scholarShip) {
         Profile profile = new Profile(lname, fname, dob);
-        Resident tempResident = new Resident(profile,Major.UNDEFINED.toString(),Constant.UNDEFINED_CREDITS.getValue());
-        if (this.roster.contains(tempResident)) {                        //checks if the student is actually in the roster.
-            if(this.roster.replaceScholar(tempResident,scholarShip)){            //checks if the major can/should be replaced.
-                System.out.println(fname + " " + lname + " " + dob + " awarded a scholarship of $" + scholarShip);
-            } else {
+        Student student = this.roster.getStudent(profile);
+        if(!isNumeric(scholarShip)){
+            System.out.println("Amount is not an integer.");
+            return;
+        }
+        if(!student.isResident() || !(enrollment.getEnrollStudent(profile).getCreditsEnrolled() >= TuitionValues.FULL_TIME_MIN.getValue())){
+            System.out.println(fname + " " + lname + " " + dob + " part time student is not eligible for the scholarship.");
+            return;
+        }
+        if(Integer.parseInt(scholarShip) > 10000 || Integer.parseInt(scholarShip) <= 0){
+            System.out.println(scholarShip + ": invalid amount.");
+            return;
+        }
+        Resident resident = (Resident) student;
+        if (this.roster.contains(resident)) {
+            if(resident.getScholarship() == Integer.parseInt(scholarShip)){
                 System.out.println(fname + " " + lname + " " + dob + " already has this scholarship");
+                return;
+            }
+            if(this.roster.replaceScholar(resident,scholarShip)){
+                if(resident.getScholarship() == 0) {
+                    resident.setScholarship(Integer.parseInt(scholarShip));
+                    System.out.println(fname + " " + lname + " " + dob + " awarded a scholarship of $" + scholarShip);
+                }
+                else {
+                    resident.setScholarship(Integer.parseInt(scholarShip));
+                    System.out.println(fname + " " + lname + " " + dob + ": scholarship amount updated.");
+                }
+            } else {
+                System.out.println(fname + " " + lname + " " + dob + " " + student.getType() + " is not eligible for the scholarship.");
             }
         } else {
             System.out.println(fname + " " + lname + " " + dob + " is not in the Roster.");
         }
     }
-
 
     /**
      Changes the major of a student in the roster given it passes validity checks.

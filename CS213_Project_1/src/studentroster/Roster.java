@@ -113,6 +113,7 @@ public class Roster {
 
     public boolean contains(Profile profile) {
         for (Student value : this.roster) {
+            if(value == null) {return false;}
             if (value.getProfile().equals(profile)) {
                 return true;
             }
@@ -247,11 +248,12 @@ public class Roster {
     }
 
     public boolean replaceScholar(Resident resident, String scholarShip) {
-        Resident targetResident = (Resident) getStudent(resident.getProfile());
-        if(!resident.isResident() || targetResident.getScholarship() == Integer.parseInt(scholarShip)){
+        if(resident.isEligible()){
+            resident.setScholarship(Integer.parseInt(scholarShip));
+            return true;
+        } else {
             return false;
         }
-        targetResident.setScholarship(Integer.parseInt(scholarShip));
-        return true;
+
     }
 }

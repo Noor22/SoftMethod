@@ -28,7 +28,7 @@ public class Enrollment {
     public void remove(EnrollStudent enrollStudent) {
         int removePosition = find(enrollStudent);
         if(removePosition != Constant.NOT_FOUND.getValue()){
-            enrollStudents[removePosition] = enrollStudent;
+            enrollStudents[removePosition] = enrollStudents[size-1];
             enrollStudents[this.size-1] = null;
             this.size--;
         }
@@ -56,16 +56,14 @@ public class Enrollment {
         return Constant.NOT_FOUND.getValue();
     }
 
-//    public EnrollStudent getEnrollStudent(EnrollStudent enrollStudent) {
-//        for(int i = 0; i < this.size; i++) {
-//            if(enrollStudents[i].equals(enrollStudent)){
-//                System.out.println("gotem");
-//                return enrollStudents[i];
-//            }
-//        }
-//        System.out.println("poop null");
-//        return null;
-//    }
+    public EnrollStudent getEnrollStudent(Profile profile) {
+        for(int i = 0; i < this.size; i++) {
+            if(enrollStudents[i].getProfile().equals(profile)){
+                return enrollStudents[i];
+            }
+        }
+        return null;
+    }
 
     public void setEnrollCredits(EnrollStudent enrollStudent, int enrollCredits) {
         int position = find(enrollStudent);
@@ -78,37 +76,53 @@ public class Enrollment {
 
     public void print() { //print the array as is without sorting
         if(!isEmpty()){
-            System.out.println("Print Enrollment");
+            System.out.println("** Enrollment **");
             for(int i = 0; i < this.size; i++){
-                System.out.println(enrollStudents[i].toString());
+                System.out.println(enrollStudents[i].toString() + ": credits enrolled: " + enrollStudents[i].getCreditsEnrolled());
             }
-            System.out.println("Print Enrollment End");
+            System.out.println("** end of enrollment **");
+            return;
         }
-        System.out.println("Enrollment is empty");
+        System.out.println("Enrollment is empty!");
     }
 
     public void printTuition(Roster roster) {
         double tuition;
-        for(EnrollStudent enrolled : this.enrollStudents) {
-            Student currentStudent = roster.getStudent(enrolled.getProfile());
-            tuition = currentStudent.tuitionDue(enrolled.getCreditsEnrolled());
-            System.out.println(currentStudent.getProfile().toString() + " owes " + tuition);
+        int creditsEnrolled;
+        if(isEmpty()){
+            System.out.println("Student roster is empty!");
+            return;
         }
+        System.out.println("** Tuition due **");
+        for(EnrollStudent enrolled : this.enrollStudents) {
+            if(!(enrolled == null)){
+                Student currentStudent = roster.getStudent(enrolled.getProfile());
+                tuition = currentStudent.tuitionDue(enrolled.getCreditsEnrolled());
+                creditsEnrolled = enrolled.getCreditsEnrolled();
+                System.out.println(currentStudent.getProfile().toString() + " "
+                        + currentStudent.getType() + " enrolled " + creditsEnrolled
+                        + " credits: tuition due: $" + tuition);
+            }
+        }
+        System.out.println("** end of tuition due **");
     }
 
     public void semesterEnd(Roster roster) {
         int creditsEnrolled;
         int amountGraduated = 0;
-        System.out.println("Semester over top");
+        System.out.println("Credits completed has been updated.");
+        System.out.println("** list of students eligible for graduation **");
         for(EnrollStudent enrolled : this.enrollStudents) {
-            Student currentStudent = roster.getStudent(enrolled.getProfile());
-            creditsEnrolled = enrolled.getCreditsEnrolled();
-            currentStudent.addCredits(creditsEnrolled);
-            if(currentStudent.getCredits() >= 120){
-                System.out.println(currentStudent + " has graduated with " + currentStudent.getCredits());
-                amountGraduated++;
+            if(!(enrolled == null)){
+                Student currentStudent = roster.getStudent(enrolled.getProfile());
+                creditsEnrolled = enrolled.getCreditsEnrolled();
+                currentStudent.addCredits(creditsEnrolled);
+                if(currentStudent.getCredits() >= 120) {
+                    System.out.println(currentStudent + " has graduated with " + currentStudent.getCredits());
+                    amountGraduated++;
+                }
             }
         }
-        System.out.println("Semester over bottom");
+        System.out.println("** end of graduation list");
     }
 }

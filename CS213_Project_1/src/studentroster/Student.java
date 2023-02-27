@@ -93,21 +93,26 @@ public abstract class Student implements Comparable<Student> {
      */
     public abstract double tuitionDue(int creditsEnrolled);
 
+    public abstract String getArea();
+
     /**
      *
      * @return
      */
     public abstract boolean isResident();
+
+    public abstract String getType();
     /**
      Converts the student to string representation.
      @return the string representation of this student.
      */
     @Override
     public String toString() {
-        return (this.profile.toString() + " " + "(" + this.major.getMajorCode() + " "
+        return (this.profile.toString() + " (" + this.major.getMajorCode() + " "
                 + this.major + " " + this.major.getSchool() + ") "
                 + "creditCompleted: " + creditCompleted
-                + " " + "(" + this.getStanding() + ")");
+                + " " + "(" + this.getStanding() + ")")
+                + " " + this.residency();
     }
 
     /**
@@ -123,6 +128,15 @@ public abstract class Student implements Comparable<Student> {
         return false;
     }
 
+    public String residency() {
+        if(!isResident()) {
+            return "(non-resident)" + " " +  this.getArea();
+        } else {
+            return "(resident)";
+
+        }
+
+    }
     /**
      Checks whether another student should be before or after this student.
      @param student the student to be compared to.

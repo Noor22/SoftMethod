@@ -33,11 +33,25 @@ public class Resident extends Student{
         return true;
     }
 
+    @Override
+    public String getArea() {
+        return "";
+    }
+
+    @Override
+    public String getType() {
+        return "(Resident)";
+    }
+
     public void setScholarship(int scholarship) {
         this.scholarship = scholarship;
     }
 
     public int getScholarship() {
         return this.scholarship;
+    }
+
+    public boolean isEligible() {
+        return this.getCredits() >= TuitionValues.FULL_TIME_MIN.getValue();
     }
 }

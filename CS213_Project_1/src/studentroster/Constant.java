@@ -28,7 +28,14 @@ public enum Constant {
     MINIMUM_AGE (16),
     UNDEFINED_CREDITS (0),
     DATE_TESTS(5),
-    STUDENT_TESTS (2);
+
+    ONE_REQUIRED (1),
+    TWO_REQUIRED (2),
+    THREE_REQUIRED (3),
+    FOUR_REQUIRED (4),
+    FIVE_REQUIRED (5),
+    SIX_REQUIRED (6),
+    SEVEN_REQUIRED (7);
 
     private final int value;
 

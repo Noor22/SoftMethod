@@ -10,7 +10,7 @@ public class International extends NonResident {
 
     public double tuitionDue(int creditsEnrolled){
         double tuition;
-        if(isStudyAbroad) {
+        if(!isStudyAbroad) {
              tuition = super.tuitionDue(creditsEnrolled); // uses nonresident tuition as a base
                 tuition += TuitionValues.HEALTH_INSURANCE_FEE.getValue();
         }else{
@@ -34,5 +34,23 @@ public class International extends NonResident {
     @Override
     public boolean isResident() {
         return super.isResident();
+    }
+
+    @Override
+    public String getType() {
+        return "(International Student" + isAbroad();
+    }
+
+    @Override
+    public String getArea() {
+        return "(international" + isAbroad();
+    }
+
+    private String isAbroad() {
+        if(this.isStudyAbroad){
+            return ": study abroad)";
+        } else {
+            return ")";
+        }
     }
 }
