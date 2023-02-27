@@ -1,4 +1,6 @@
 package studentroster;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
@@ -101,12 +103,9 @@ public class TuitionManager {
     }
     private boolean processAddCommands(Scanner scanner, String operationCode){
         switch(operationCode){
+
             case "LS":                          // load the student roster from an external file
-                Scanner fileScanner = new Scanner(scanner.next());
-                fileScanner.useDelimiter(",");
-                while(fileScanner.hasNext()){
-                    processAddCommands(fileScanner, "A" + fileScanner.next());
-                }
+                readFile();
                 return false;
             case "AR":                          // add a Resident student, for example, AR John Doe 4/3/2003 CS 29
                 addResident(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next());
@@ -126,6 +125,21 @@ public class TuitionManager {
         }
     }
 
+    private void readFile() {
+        try {
+            File classSchedule = new File("studentList.txt");
+            Scanner fileScanner = new Scanner(classSchedule);
+            fileScanner.useDelimiter(",|\n");
+            System.out.println("Student Roster loaded");
+            while (fileScanner.hasNext()){
+                processAddCommands(fileScanner, "A" + fileScanner.next());
+            }
+            System.out.println("end of student list");
+            fileScanner.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      Adds a student to the Roster if it passes all the validity checks.

@@ -36,5 +36,8 @@ public class Resident extends Student{
     public void setScholarship(int scholarship) {
         this.scholarship = scholarship;
     }
-    
+
+    public int getScholarship() {
+        return this.scholarship;
+    }
 }

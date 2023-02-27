@@ -35,7 +35,6 @@ public class Roster {
     public Student getStudent(Profile profile) {
         for(int i = 0; i < this.size; i++) {
             if(roster[i].getProfile().equals(profile)){
-                System.out.println("gotem student");
                 return roster[i];
             }
         }
@@ -248,11 +247,10 @@ public class Roster {
     }
 
     public boolean replaceScholar(Resident resident, String scholarShip) {
-        if(!resident.isResident()){
+        Resident targetResident = (Resident) getStudent(resident.getProfile());
+        if(!resident.isResident() || targetResident.getScholarship() == Integer.parseInt(scholarShip)){
             return false;
         }
-        int position = find(resident);
-        Resident targetResident = (Resident) this.roster[position];
         targetResident.setScholarship(Integer.parseInt(scholarShip));
         return true;
     }

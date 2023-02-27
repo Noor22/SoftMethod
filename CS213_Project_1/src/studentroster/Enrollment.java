@@ -91,20 +91,24 @@ public class Enrollment {
         double tuition;
         for(EnrollStudent enrolled : this.enrollStudents) {
             Student currentStudent = roster.getStudent(enrolled.getProfile());
-            tuition = currentStudent.tuitionDue(currentStudent.getCredits());
-            System.out.println(currentStudent.getProfile().toString() + "owes " + tuition);
+            tuition = currentStudent.tuitionDue(enrolled.getCreditsEnrolled());
+            System.out.println(currentStudent.getProfile().toString() + " owes " + tuition);
         }
     }
 
     public void semesterEnd(Roster roster) {
         int creditsEnrolled;
+        int amountGraduated = 0;
+        System.out.println("Semester over top");
         for(EnrollStudent enrolled : this.enrollStudents) {
             Student currentStudent = roster.getStudent(enrolled.getProfile());
             creditsEnrolled = enrolled.getCreditsEnrolled();
             currentStudent.addCredits(creditsEnrolled);
             if(currentStudent.getCredits() >= 120){
                 System.out.println(currentStudent + " has graduated with " + currentStudent.getCredits());
+                amountGraduated++;
             }
         }
+        System.out.println("Semester over bottom");
     }
 }
