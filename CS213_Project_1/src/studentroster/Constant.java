@@ -1,14 +1,13 @@
 package studentroster;
 
 /**
- The Constant Enum class stores all the variables
- with constant values in order to preserve adequate
- coding standards.
- @author Dylan Turner, Noor Hasan
+ * The Constant Enum class stores all the variables
+ * with constant values in order to preserve clean
+ * coding standards.
+ * @author Dylan Turner, Noor Hasan
  */
 
 public enum Constant {
-    //Leap Year dividing numbers
     QUADRENNIAL(4),
     CENTENNIAL (100),
     QUATERCENTENNIAL (400),
@@ -27,11 +26,8 @@ public enum Constant {
     NOT_FOUND (-1),
     MINIMUM_AGE (16),
     UNDEFINED_CREDITS (0),
-    DATE_TESTS(5),
-
     ONE_REQUIRED (1),
     TWO_REQUIRED (2),
-    THREE_REQUIRED (3),
     FOUR_REQUIRED (4),
     FIVE_REQUIRED (5),
     SIX_REQUIRED (6),
@@ -40,15 +36,15 @@ public enum Constant {
     private final int value;
 
     /**
-       Creates the constant
-       @param value the corresponding value.
+     * Creates the constant
+     * @param value the corresponding value.
      */
     Constant(int value){
         this.value = value;
     }
     /**
-       Getter method for the constants.
-       @return the value of the specified constant.
+     * Getter method for the constants.
+     * @return the value of the specified constant.
      */
     public int getValue(){
         return this.value;

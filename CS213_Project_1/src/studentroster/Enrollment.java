@@ -1,14 +1,26 @@
 package studentroster;
 
+/**
+ The Enrollment class acts as a database for enrolled students, storing
+ an array of enrolled students and the size of the array.
+ @author Dylan Turner, Noor Hasan
+ */
 public class Enrollment {
     private EnrollStudent[] enrollStudents;
     private int size;
 
+    /**
+     *
+     */
     public Enrollment() {
         this.enrollStudents = new EnrollStudent[Constant.ENROLLMENT_INITIAL.getValue()];
         this.size = 0;
     }
 
+    /**
+     *
+     * @param enrollStudent
+     */
     public void add(EnrollStudent enrollStudent) {
         if(this.size == enrollStudents.length){
             int newLength = this.size + 1;
