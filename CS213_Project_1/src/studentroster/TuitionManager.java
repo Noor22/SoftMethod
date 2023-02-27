@@ -105,11 +105,10 @@ public class TuitionManager {
                 this.enrollment.print();
                 return false;
             case "PT":                          // display the tuition due based on the credits enrolled, with the order in the enrollment array.
-
+                this.enrollment.printTuition(this.roster);
                 return false;
             case "SE":                          // semester end to add the enrolled credits to the credit completed in the roster
                 // and print out the students who have already completed 120 credits or more.
-
                 return false;
             default:
                 System.out.println(operationCode + " is an invalid command!");
@@ -376,15 +375,6 @@ public class TuitionManager {
             System.out.println("School doesn't exist: " + school);
         }
     }
-
-//    private void printTuition() {
-//        if(!this.enrollment.isEmpty()){
-//            System.out.println("Print Tuition");
-//            this.roster.printTuition();
-//            System.out.println("Print Tuition End");
-//        }
-//        System.out.println("Enrollment is empty");
-//    }
 
     /**
       Prints error code saying that the roster is empty.

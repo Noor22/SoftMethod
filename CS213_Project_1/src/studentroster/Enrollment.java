@@ -56,6 +56,17 @@ public class Enrollment {
         return Constant.NOT_FOUND.getValue();
     }
 
+    public EnrollStudent getEnrollStudent(EnrollStudent enrollStudent) {
+        for(int i = 0; i < this.size; i++) {
+            if(enrollStudents[i].equals(enrollStudent)){
+                System.out.println("gotem");
+                return enrollStudents[i];
+            }
+        }
+        System.out.println("poop null");
+        return null;
+    }
+
     public void setEnrollCredits(EnrollStudent enrollStudent, int enrollCredits) {
         int position = find(enrollStudent);
         this.enrollStudents[position].setCreditsEnrolled(enrollCredits);
@@ -76,4 +87,12 @@ public class Enrollment {
         System.out.println("Enrollment is empty");
     }
 
+    public void printTuition(Roster roster) {
+        double tuition;
+        for(EnrollStudent enrolled : this.enrollStudents) {
+            Student currentStudent = roster.getStudent(enrolled.getProfile());
+            tuition = currentStudent.tuitionDue(currentStudent.getCredits());
+            System.out.println(currentStudent.getProfile().toString() + "owes " + tuition);
+        }
+    }
 }

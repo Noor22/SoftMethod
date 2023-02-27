@@ -32,6 +32,17 @@ public class Roster {
         return (Constant.NOT_FOUND.getValue());
     }
 
+    public Student getStudent(Profile profile) {
+        for(int i = 0; i < this.size; i++) {
+            if(roster[i].getProfile().equals(profile)){
+                System.out.println("gotem student");
+                return roster[i];
+            }
+        }
+        System.out.println("poopstudent null");
+        return null;
+    }
+
     /**
      Checks if the roster is currently empty.
      @return true if the roster is empty, false if not.
