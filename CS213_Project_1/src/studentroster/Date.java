@@ -104,7 +104,7 @@ public class Date implements Comparable<Date> {
     /**
      * Helper method for the isValid() method. Checks if the date
      * is a leap year or not.
-       @return true if leap year,false if not.
+     * @return true if leap year,false if not.
      */
     public boolean isLeapYear() {
         boolean leapCase1 = (this.year % Constant.QUATERCENTENNIAL.getValue() == 0);
@@ -114,7 +114,7 @@ public class Date implements Comparable<Date> {
     }
 
     /**
-       Returns string representation of the date.
+     * Returns string representation of the date.
        @return string representation of date.
      */
     @Override
