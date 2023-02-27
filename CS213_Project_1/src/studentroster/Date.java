@@ -102,8 +102,8 @@ public class Date implements Comparable<Date> {
     }
 
     /**
-       Helper method for the isValid() method. Checks if the date
-       is a leap year or not.
+     * Helper method for the isValid() method. Checks if the date
+     * is a leap year or not.
        @return true if leap year,false if not.
      */
     public boolean isLeapYear() {
