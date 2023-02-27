@@ -17,15 +17,28 @@ public enum Major {
     private final String majorCode;
     private final String school;
 
+    /**
+     * Creates the Major
+     * @param majorCode the major code for the value
+     * @param school the school for the value.
+     */
     Major(String majorCode,String school) {
         this.majorCode = majorCode;
         this.school = school;
     }
 
+    /**
+     *Getter method for the major code.
+     * @return the major code.
+     */
     public String getMajorCode(){
         return this.majorCode;
     }
 
+    /**
+     *Getter method for the school.
+     * @return the school.
+     */
     public String getSchool(){
         return this.school;
     }

@@ -115,7 +115,7 @@ public class Date implements Comparable<Date> {
 
     /**
      * Returns string representation of the date.
-       @return string representation of date.
+     * @return string representation of date.
      */
     @Override
     public String toString() {
@@ -123,20 +123,20 @@ public class Date implements Comparable<Date> {
     }
 
     /**
-       Returns whether two dates are equal.
-       @param otherDate date to be compared to.
-       @return true if dates are equal, false if not.
+     * Returns whether two dates are equal.
+     * @param otherDate date to be compared to.
+     * @return true if dates are equal, false if not.
      */
     public boolean equals(Date otherDate) {
         return ((this.year == otherDate.year) && (this.month == otherDate.month) && (this.day == otherDate.day));
     }
 
     /**
-       Returns whether a date should be before or after other date.
-       @param otherDate date to be compared to.
-       @return 1 if the other date is before this date.
-       -1 if the other date is after this date.
-       0 if the two dates are equal.
+     * Returns whether a date should be before or after other date.
+     * @param otherDate date to be compared to.
+     * @return 1 if the other date is before this date.
+     * -1 if the other date is after this date.
+     * 0 if the two dates are equal.
      */
     @Override
     public int compareTo(Date otherDate) {
@@ -161,7 +161,7 @@ public class Date implements Comparable<Date> {
         return 1;
     }
 
-    //Old test bed main
+//    Old Testbed Main
 //    /**
 //       Helper Method for Testbed Main.
 //       Creates individual dates from test arrays and checks

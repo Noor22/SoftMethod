@@ -6,7 +6,6 @@ package studentroster;
  * coding standards.
  * @author Dylan Turner, Noor Hasan
  */
-
 public enum Constant {
     QUADRENNIAL(4),
     CENTENNIAL (100),

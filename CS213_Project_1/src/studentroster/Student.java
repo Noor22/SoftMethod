@@ -1,9 +1,10 @@
 package studentroster;
 
 /**
- Blueprint for student objects, stores their profile, major,
- and the amount of credits completed.
- @author Dylan Turner, Noor Hasan
+ * Blueprint for student objects, stores their profile, major,
+ * and the amount of credits completed. Is the superclass to
+ * Resident and NonResident.
+ * @author Dylan Turner, Noor Hasan
  */
 public abstract class Student implements Comparable<Student> {
     private Profile profile;
@@ -11,10 +12,10 @@ public abstract class Student implements Comparable<Student> {
     private int creditCompleted;
 
     /**
-     Constructor for the Student object.
-     @param profile the student's profile.
-     @param major the student's major.
-     @param creditCompleted the amount of credits completed.
+     * Constructor for the Student object.
+     * @param profile the student's profile.
+     * @param major the student's major.
+     * @param creditCompleted the amount of credits completed.
      */
     public Student(Profile profile, String major,int creditCompleted) {
         this.profile = profile;
@@ -28,32 +29,32 @@ public abstract class Student implements Comparable<Student> {
     }
 
     /**
-     Setter method for the student's major.
+     * Setter method for the student's major.
      */
     public void setMajor(Major major) {
         this.major = major;
     }
 
     /**
-     Getter method for the student's profile.
-     @return this student's profile.
+     * Getter method for the student's profile.
+     * @return this student's profile.
      */
     public Profile getProfile() {
         return profile;
     }
 
     /**
-     Getter method for the student's major.
-     @return this student's major.
+     * Getter method for the student's major.
+     * @return this student's major.
      */
     public Major getMajor() {
         return this.major;
     }
 
     /**
-       Determines the student's standing based on how many
-       credits they have earned.
-       @return string representation of student's standing
+     * Determines the student's standing based on how many
+     * credits they have earned.
+     * @return string representation of student's standing
      */
     public String getStanding(){
         if(this.creditCompleted < 30) {
@@ -67,44 +68,61 @@ public abstract class Student implements Comparable<Student> {
     }
 
     /**
-     Getter method for the student's credits.
-     @return this student's credits completed.
+     * Getter method for the student's credits.
+     * @return this student's credits completed.
      */
     public int getCredits() {
         return this.creditCompleted;
     }
 
+    /**
+     * Adds a specified amount of credits to the
+     * students credits completed variable.
+     * @param additionalCredits
+     */
     public void addCredits(int additionalCredits) {
         this.creditCompleted += additionalCredits;
     }
+
     /**
-     *
-     * @param creditEnrolled
-     * @return
+     * Checks if the amount of credits input is a
+     * valid amount for the given type of student.
+     * @param creditEnrolled credits to check.
+     * @return true if valid amount, false if not.
      */
     public boolean isValid(int creditEnrolled){
         return  !(creditEnrolled > 24 || creditEnrolled < 3);
     }
 
     /**
-     *
-     * @param creditsEnrolled
-     * @return
+     * Calculates the tuition owed by the student based
+     * on the amount of creditsEnrolled.
+     * @param creditsEnrolled amount of credits student is enrolled in.
+     * @return the tuition owed by the student.
      */
     public abstract double tuitionDue(int creditsEnrolled);
 
+    /**
+     * Helper method for outputting string representation of a student.
+     * @return what should end the string representation of a student.
+     */
     public abstract String getArea();
 
     /**
-     *
-     * @return
+     * Checks if the student is a resident.
+     * @return true if the student type is resident, false otherwise.
      */
     public abstract boolean isResident();
 
-    public abstract String getType();
     /**
-     Converts the student to string representation.
-     @return the string representation of this student.
+     * Helper method for outputting string representation of a student.
+     * @return what type of student they are.
+     */
+    public abstract String getType();
+
+    /**
+     * Converts the student to string representation.
+     * @return the string representation of this student.
      */
     @Override
     public String toString() {
@@ -116,9 +134,9 @@ public abstract class Student implements Comparable<Student> {
     }
 
     /**
-     Determines whether two students are equal.
-     @param otherStudent the other student in question.
-     @return true if they are equal, false if not.
+     * Determines whether two students are equal.
+     * @param otherStudent the other student in question.
+     * @return true if they are equal, false if not.
      */
     @Override
     public boolean equals(Object otherStudent) {
@@ -128,6 +146,10 @@ public abstract class Student implements Comparable<Student> {
         return false;
     }
 
+    /**
+     * Helper method toString, for formatting the string representation of a student.
+     * @return what type of student they are, and what state they're from if applicable.
+     */
     public String residency() {
         if(!isResident()) {
             return "(non-resident)" + " " +  this.getArea();
@@ -137,12 +159,13 @@ public abstract class Student implements Comparable<Student> {
         }
 
     }
+
     /**
-     Checks whether another student should be before or after this student.
-     @param student the student to be compared to.
-     @return 1 if the other student should be before this one.
-     -1 if the other student should be after this one.
-     0 if the two students are equal.
+     * Checks whether another student should be before or after this student.
+     * @param student the student to be compared to.
+     * @return 1 if the other student should be before this one.
+     * -1 if the other student should be after this one.
+     * 0 if the two students are equal.
      */
     @Override
     public int compareTo(Student student) {
@@ -155,19 +178,21 @@ public abstract class Student implements Comparable<Student> {
         return 1;
     }
 
-    /**
-     Helper Method for Testbed Main.
-     Creates two students from the test arrays and tests
-     whether compareTo() method returns correct output.
-     @param lname1 last name array of the first student.
-     @param lname2 last name array of the second student.
-     @param fname1 first name array of the first student.
-     @param fname2 first name array of the second student.
-     @param dob1 date of birth array of the first student
-     @param dob2 date of birth array of the second student.
-     @param test the test number to perform from the design document.
-     @param correctOutput what the test should return.
-     */
+
+//    Old Testbed Main
+//    /**
+//     Helper Method for Testbed Main.
+//     Creates two students from the test arrays and tests
+//     whether compareTo() method returns correct output.
+//     @param lname1 last name array of the first student.
+//     @param lname2 last name array of the second student.
+//     @param fname1 first name array of the first student.
+//     @param fname2 first name array of the second student.
+//     @param dob1 date of birth array of the first student
+//     @param dob2 date of birth array of the second student.
+//     @param test the test number to perform from the design document.
+//     @param correctOutput what the test should return.
+//     */
 //    private static void callTests(String[] lname1, String[] lname2, String[] fname1,
 //                                  String[] fname2, String[] dob1, String[] dob2,
 //                                  int test, int correctOutput){

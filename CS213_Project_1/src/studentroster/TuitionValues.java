@@ -1,9 +1,9 @@
 package studentroster;
 
 /**
- The Tuition Values Enum class stores all the costs
- for each type of student.
- @author Dylan Turner, Noor Hasan
+ * The Tuition Values Enum class stores all the costs
+ * for each type of student.
+ * @author Dylan Turner, Noor Hasan
  */
 public enum TuitionValues {
     //Table Values
@@ -32,15 +32,15 @@ public enum TuitionValues {
     private final double value;
 
     /**
-     Creates the constant
-     @param value the corresponding value.
+     * Creates the Tuition Value
+     * @param value the corresponding value.
      */
     TuitionValues(double value){
         this.value = value;
     }
     /**
-     Getter method for the constants.
-     @return the value of the specified constant.
+     * Getter method for the Tuition Values
+     * @return the value of the specified value.
      */
     public double getValue(){
         return this.value;

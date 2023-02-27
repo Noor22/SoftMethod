@@ -5,17 +5,18 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 
 /**
- This is user interface that reads terminal commands and displays the results.
- It can process single commands or sequences of commands. It stores the roster.
- @author Dylan Turner, Noor Hasan
+ * This is user interface that reads terminal commands and displays the results.
+ * It can process single commands or sequences of commands. It stores the roster
+ * and the enrollment.
+ * @author Dylan Turner, Noor Hasan
  */
 public class TuitionManager {
     private final Roster roster;
     private final Enrollment enrollment;
 
     /**
-     Constructor for the Roster Manager. Creates a
-     new roster and stores it.
+     * Constructor for the Tuition Manager. Creates a
+     * new roster and enrollment and stores them.
      */
     public TuitionManager() {
         this.roster = new Roster();
@@ -23,8 +24,8 @@ public class TuitionManager {
     }
 
     /**
-     Continuously runs and processes user commands until it is
-     terminated by quit command "Q".
+     * Continuously runs and processes user commands until it is
+     * terminated by quit command "Q".
      */
     public void run() {
         Scanner lineScanner = new Scanner(System.in);
@@ -32,7 +33,6 @@ public class TuitionManager {
         boolean stopProgram = false;
         while (!stopProgram) {                          //checks if the terminate command has been entered.
             String commandLine = lineScanner.nextLine();
-           // System.out.println("this is the commandLine: " + commandLine);
             stopProgram = processCommand(commandLine);
         }
         lineScanner.close();
@@ -40,19 +40,16 @@ public class TuitionManager {
     }
 
     /**
-       Helper method for run(), that stores and runs all valid commands.
-       @param commandLine object to receive user input.
-       @return true if terminate command given, false otherwise.
+     * Helper method for run(), that stores and runs all valid commands.
+     * @param commandLine next line to read inputs from.
+     * @return true if terminate command given, false otherwise.
      */
     private boolean processCommand(String commandLine) {
         Scanner scanner = new Scanner(commandLine);
         StringTokenizer tokenizer = new StringTokenizer(commandLine);
         int tokenAmount = tokenizer.countTokens();
-       // System.out.println("this is the tokenAmount: " + tokenAmount);
         if(tokenAmount == 0) {return false;}
         String operationCode = scanner.next();
-      //  System.out.println("this is the operationCode: " + operationCode);
-
         switch (operationCode) {
             case "A":                           //add a student to the roster.
                 if(isRightAmount(Constant.SIX_REQUIRED,tokenAmount))
@@ -92,59 +89,76 @@ public class TuitionManager {
                     return true;
             default:                            //invalid command.
                 return processAdditionalCommands(scanner,operationCode,tokenAmount); // continues to helper method to process additional commands
-                                                                       // in order to maintain clean coding practices.
+
         }
     }
 
+    /**
+     * Helper method for processCommand(), that continues switch case
+     * to process additiional commands.
+     * @param scanner scanner from the previous method.
+     * @param operationCode operation code from previous method.
+     * @param tokenAmount token amount from previous method.
+     * @return true if terminate command given, false otherwise.
+     */
     private boolean processAdditionalCommands(Scanner scanner,String operationCode, int tokenAmount) {
         switch (operationCode) {
-            case "E":                           // enroll a student with the number of credits. For example, E John Doe 4/3/2003 24
+            case "E":                                                     // enroll a student with the number of credits. For example, E John Doe 4/3/2003 24
                 if(isRightAmount(Constant.FIVE_REQUIRED,tokenAmount))
                     enroll(scanner.next(),scanner.next(),scanner.next(),scanner.next());
                 return false;
-            case "D":                           // drop a student from the enrollment list, for example, D John Doe 4/3/2003
+            case "D":                                                     // drop a student from the enrollment list, for example, D John Doe 4/3/2003
                 if(isRightAmount(Constant.FOUR_REQUIRED,tokenAmount))
                     drop(scanner.next(),scanner.next(),scanner.next());
                 return false;
-            case "S":                           // award the scholarship to a resident student, for example, S Roy Brooks 9/9/1999 10000
+            case "S":                                                     // award the scholarship to a resident student, for example, S Roy Brooks 9/9/1999 10000
                 if(isRightAmount(Constant.FIVE_REQUIRED,tokenAmount))
                     awardScholar(scanner.next(),scanner.next(),scanner.next(),scanner.next());
                 return false;
-            case "PE":                          // display the current enrollment list, based on their order in the array.
+            case "PE":                                                    // display the current enrollment list, based on their order in the array.
                 if(isRightAmount(Constant.ONE_REQUIRED,tokenAmount))
                     this.enrollment.print();
                 return false;
-            case "PT":                          // display the tuition due based on the credits enrolled, with the order in the enrollment array.
+            case "PT":                                                     // display the tuition due based on the credits enrolled, with the order in the enrollment array.
                 if(isRightAmount(Constant.ONE_REQUIRED,tokenAmount))
                     this.enrollment.printTuition(this.roster);
                 return false;
-            case "SE":                                                      // semester end to add the enrolled credits to the credit completed in the roster
+            case "SE":                                                     // semester end to add the enrolled credits to the credit completed in the roster
                 if(isRightAmount(Constant.ONE_REQUIRED,tokenAmount))
-                    this.enrollment.semesterEnd(this.roster);                   // and print out the students who have already completed 120 credits or more.
+                    this.enrollment.semesterEnd(this.roster);              // and print out the students who have already completed 120 credits or more.
                 return false;
             default:
                 return processAddCommands(scanner,operationCode,tokenAmount);
         }
     }
+
+    /**
+     * Helper method for processAdditionalCommands(), that continues
+     * switch case to process the add student commands.
+     * @param scanner scanner from the previous method.
+     * @param operationCode operation code from previous method.
+     * @param tokenAmount token amount from previous method.
+     * @return true if terminate command given, false otherwise.
+     */
     private boolean processAddCommands(Scanner scanner,String operationCode, int tokenAmount){
         switch(operationCode){
-            case "LS":                          // load the student roster from an external file
+            case "LS":                                                     // load the student roster from an external file
                 if(isRightAmount(Constant.TWO_REQUIRED,tokenAmount))
                     readFile(scanner.next());
                 return false;
-            case "AR":                          // add a Resident student, for example, AR John Doe 4/3/2003 CS 29
+            case "AR":                                                     // add a Resident student, for example, AR John Doe 4/3/2003 CS 29
                 if(isRightAmount(Constant.SIX_REQUIRED,tokenAmount))
                     addResident(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next());
                 return false;
-            case "AN":                          // add a NonResident student, for example, AN Leo Jones 4/21/2006 ITI 20
+            case "AN":                                                     // add a NonResident student, for example, AN Leo Jones 4/21/2006 ITI 20
                 if(isRightAmount(Constant.SIX_REQUIRED,tokenAmount))
                     addNonResident(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next());
                 return false;
-            case "AT":                          // add a Tri state student, for example, AT Emma Miller 2/28/2003 CS 15 NY
+            case "AT":                                                     // add a Tri state student, for example, AT Emma Miller 2/28/2003 CS 15 NY
                 if(hasState(tokenAmount))
                     addTriState(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next());
                 return false;
-            case "AI":                          // add an International student, for example, AI Oliver Chang 11/30/2000 BAIT 78 false
+            case "AI":                                                     // add an International student, for example, AI Oliver Chang 11/30/2000 BAIT 78 false
                 if(hasAbroad(scanner,tokenAmount))
                     addInternational(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next(), scanner.next());
                 return false;
@@ -154,6 +168,13 @@ public class TuitionManager {
         }
     }
 
+    /**
+     * Checks whether the input command has enough tokens
+     * to add an international student, and adds them if it does.
+     * @param scanner scanner from processAddCommands()
+     * @param tokenAmount tokenAmount from processAddCommands()
+     * @return true if could add the international student, false if not.
+     */
     private boolean hasAbroad(Scanner scanner, int tokenAmount) {
         if(Constant.SEVEN_REQUIRED.getValue() == tokenAmount){
             return true;
@@ -166,6 +187,13 @@ public class TuitionManager {
         }
     }
 
+    /**
+     * Healer method for the process command methods that checks if the
+     * amount of input tokens is correct for the specific command.
+     * @param requiredAmount amount of tokens that there should be.
+     * @param tokenAmount amount of tokens that there are.
+     * @return true if there is enough tokens, false if not.
+     */
     private boolean isRightAmount(Constant requiredAmount, int tokenAmount){
         if(requiredAmount.getValue() == tokenAmount){
             return true;
@@ -175,6 +203,12 @@ public class TuitionManager {
         }
     }
 
+    /**
+     * Checks whether the input command has enough tokens
+     * to add a tri-state student, and adds them if it does.
+     * @param tokenAmount amount of tokens that are there.
+     * @return
+     */
     private boolean hasState(int tokenAmount){
         if(Constant.SEVEN_REQUIRED.getValue() == tokenAmount){
             return true;
@@ -187,6 +221,12 @@ public class TuitionManager {
         return false;
     }
 
+    /**
+     * Reads from an external file and recursively calls read
+     * commands. In this case of project 2, it adds a
+     * list of students to the roster.
+     * @param fileName the name of the desired file.
+     */
     private void readFile(String fileName) {
         try {
             File classSchedule = new File(fileName);
@@ -209,8 +249,8 @@ public class TuitionManager {
     }
 
     /**
-     Adds a student to the Roster if it passes all the validity checks.
-     @param student student to be added.
+     * Adds a student to the Roster if it passes all the validity checks.
+     * @param student student to be added.
      */
     private void add(Student student) {
         if (isAllowedDate(student)) {              //checks if the student is allowed to be added
@@ -225,6 +265,14 @@ public class TuitionManager {
         }
     }
 
+    /**
+     * Adds a Resident to the roster if it passes all validity checks.
+     * @param fname first name of the student.
+     * @param lname last name of the student.
+     * @param dob date of birth of the student.
+     * @param major major of the student.
+     * @param creditsCompleted amount of credits completed by the student.
+     */
     private void addResident(String fname, String lname, String dob, String major, String creditsCompleted) {
         Profile newProfile = new Profile(lname,fname,dob);
         if (!allowedCredits(creditsCompleted) || !isValidMajor(major)) { return;}
@@ -232,6 +280,14 @@ public class TuitionManager {
         add(newResident);
     }
 
+    /**
+     * Adds a Non-Resident to the roster if it passes all validity checks.
+     * @param fname first name of the student.
+     * @param lname last name of the student.
+     * @param dob date of birth of the student.
+     * @param major major of the student.
+     * @param creditsCompleted amount of credits completed by the student.
+     */
     private void addNonResident(String fname, String lname, String dob, String major, String creditsCompleted) {
         Profile newProfile = new Profile(lname,fname,dob);
         if (!allowedCredits(creditsCompleted)) { return;}
@@ -239,6 +295,15 @@ public class TuitionManager {
         add(newNonResident);
     }
 
+    /**
+     * Adds a Tri-State student to the roster if it passes all validity checks.
+     * @param fname first name of the student.
+     * @param lname last name of the student.
+     * @param dob date of birth of the student.
+     * @param major major of the student.
+     * @param creditsCompleted amount of credits completed by the student.
+     * @param state state where the student lives.
+     */
     private void addTriState(String fname, String lname, String dob, String major, String creditsCompleted,String state) {
         if(!state.equalsIgnoreCase("NY")  && !state.equalsIgnoreCase("NJ") && !state.equalsIgnoreCase("CT")){
             System.out.println(state + ": Invalid state code.");
@@ -250,6 +315,15 @@ public class TuitionManager {
         add(newTriState);
     }
 
+    /**
+     * Adds an International student to the roster if it passes all validity checks.
+     * @param fname first name of the student.
+     * @param lname last name of the student.
+     * @param dob date of birth of the student.
+     * @param major major of the student.
+     * @param creditsCompleted amount of credits completed by the student.
+     * @param isAbroad whether the student is studying abroad or not.
+     */
     private void addInternational(String fname, String lname, String dob, String major, String creditsCompleted, String isAbroad) {
         Profile newProfile = new Profile(lname,fname,dob);
         if (!allowedCredits(creditsCompleted)) { return;}
@@ -257,12 +331,28 @@ public class TuitionManager {
         add(newInternational);
     }
 
+    /**
+     * Adds an International student to the roster if it passes all validity checks.
+     * @param fname first name of the student.
+     * @param lname last name of the student.
+     * @param dob date of birth of the student.
+     * @param major major of the student.
+     * @param creditsCompleted amount of credits completed by the student.
+     */
     private void addInternational(String fname, String lname, String dob, String major, String creditsCompleted) {
         Profile newProfile = new Profile(lname,fname,dob);
         if (!allowedCredits(creditsCompleted)) { return;}
         International newInternational = new International(newProfile, major, Integer.parseInt(creditsCompleted), false);
         add(newInternational);
     }
+
+    /**
+     * Enrolls a student to the enrollment if it passes all validity checks.
+     * @param fname first name of the student.
+     * @param lname last name of the student.
+     * @param dob date of birth of the student.
+     * @param enrollCredits amount of credits for the student to enroll in.
+     */
     private void enroll(String fname, String lname, String dob, String enrollCredits) {
         if(!isNumeric(enrollCredits)){
             System.out.println("Credits enrolled is not an integer.");
@@ -297,10 +387,10 @@ public class TuitionManager {
     }
 
     /**
-     Removes a student from the roster given their profile if it passes validity checks.
-     @param lname the student's last name.
-     @param fname the student's first name.
-     @param dob the student's date of birth.
+     * Removes a student from the roster given their profile if it passes validity checks.
+     * @param lname the student's last name.
+     * @param fname the student's first name.
+     * @param dob the student's date of birth.
      */
     private void remove(String fname, String lname, String dob) {
         Profile profile = new Profile(lname, fname, dob);
@@ -312,6 +402,12 @@ public class TuitionManager {
         System.out.println(fname + " " + lname + " " + dob + " is not in the Roster.");
     }
 
+    /**
+     * Drops a student from the enrollment if it passes all validity checks.
+     * @param fname first name of student.
+     * @param lname last name of student.
+     * @param dob date of birth of student.
+     */
     private void drop(String fname, String lname, String dob) {
         Profile dropProfile = new Profile(lname, fname, dob);
         EnrollStudent dropStudent = this.enrollment.getEnrollStudent(dropProfile);
@@ -325,6 +421,13 @@ public class TuitionManager {
         System.out.println(fname + " " + lname + " " + dob + " is not enrolled.");
     }
 
+    /**
+     * Awards a scholarship to a student if it is allowed.
+     * @param fname first name of the student.
+     * @param lname last name of student.
+     * @param dob date of birth of student.
+     * @param scholarShip amount to award to student.
+     */
     private void awardScholar(String fname, String lname, String dob, String scholarShip) {
         Profile profile = new Profile(lname, fname, dob);
         Student student = this.roster.getStudent(profile);
@@ -364,18 +467,16 @@ public class TuitionManager {
     }
 
     /**
-     Changes the major of a student in the roster given it passes validity checks.
-     @param lname the student's last name.
-     @param fname the student's first name.
-     @param dob the student's date of birth.
-     @param major the student's major.
+     * Changes the major of a student in the roster given it passes validity checks.
+     * @param lname the student's last name.
+     * @param fname the student's first name.
+     * @param dob the student's date of birth.
+     * @param major the student's major.
      */
     private void changeMajor(String fname, String lname, String dob, String major) {
         if (!isValidMajor(major)) {                     //checks if the major is valid first.
             return;
         }
-        // access the student based on the profile, then directly change that objects major with setMajor()
-
         Profile profile = new Profile(lname, fname, dob);
         Resident tempResident = new Resident(profile,Major.UNDEFINED.toString(),Constant.UNDEFINED_CREDITS.getValue());
         if (this.roster.contains(tempResident)) {                        //checks if the student is actually in the roster.
@@ -390,16 +491,15 @@ public class TuitionManager {
     }
 
     /**
-     Helper method for the add() method, checks if a student is allowed to
-     be entered into the roster.
-     @param student student's date of birth.
-     @return false if the student fails any checks, true otherwise.
+     * Helper method for the add() method, checks if a student is allowed to
+     * be entered into the roster.
+     * @param student student's date of birth.
+     * @return false if the student fails any checks, true otherwise.
      */
     private boolean isAllowedDate(Student student){
         Date birthday = student.getProfile().getDob();
         Date today = new Date();
         String dob = birthday.toString();
-        int creditsCompleted = student.getCredits();
         if (!birthday.isValid()) {                      //checks if birthday is a valid date.
             System.out.println("DOB invalid " + dob + " not a valid calendar date!");
             return false;
@@ -415,6 +515,11 @@ public class TuitionManager {
         return true;
     }
 
+    /**
+     * Helper method for add and enroll command to check if the amount of credits are valid.
+     * @param inputCredits credits to check.
+     * @return true if they are valid, false if not.
+     */
     private boolean allowedCredits(String inputCredits) {
         if(!isNumeric(inputCredits)){               //checks if the credits are a number.
             System.out.println("Credits completed invalid: not an integer!");
@@ -430,11 +535,12 @@ public class TuitionManager {
         }
         return true;
     }
+
     /**
-     Helper method for isAllowed() method, checks if student is allowed age.
-     @param today date object containing current day.
-     @param dob the student's date of birth.
-     @return false if the student is too young, true otherwise.
+     * Helper method for isAllowed() method, checks if student is allowed age.
+     * param today date object containing current day.
+     * @param dob the student's date of birth.
+     * @return false if the student is too young, true otherwise.
      */
     private boolean isAllowedAge (Date today, Date dob){
         int yearDifference = today.getYear() - dob.getYear();
@@ -456,9 +562,9 @@ public class TuitionManager {
     }
 
     /**
-     Helper method for isAllowed() method, checks if a major is valid.
-     @param major the major in question.
-     @return false if major is not in the Major Enum class, true if it is.
+     * Helper method for isAllowed() method, checks if a major is valid.
+     * @param major the major in question.
+     * @return false if major is not in the Major Enum class, true if it is.
      */
     private boolean isValidMajor (String major){
         for (Major validMajor : Major.values()) {
@@ -471,8 +577,8 @@ public class TuitionManager {
     }
 
     /**
-     Prints a list of the students from a specified school.
-     @param school school that you want to list from.
+     * Prints a list of the students from a specified school.
+     * @param school school that you want to list from.
      */
     private void printList(String school){
         boolean allowedSchool = false;
@@ -492,16 +598,16 @@ public class TuitionManager {
     }
 
     /**
-      Prints error code saying that the roster is empty.
+     * Prints error code saying that the roster is empty.
      */
     private void rosterEmpty() {
         System.out.println("Student roster is empty!");
     }
 
     /**
-       Checks if a given string is numeric.
-       @param string string to check.
-       @return true if numeric, false if not.
+     * Checks if a given string is numeric.
+     * @param string string to check.
+     * @return true if numeric, false if not.
      */
     public static boolean isNumeric(String string) {
         try {

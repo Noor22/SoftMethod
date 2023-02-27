@@ -10,7 +10,8 @@ public class Enrollment {
     private int size;
 
     /**
-     *
+     * Constructor for the Enrollment Class, initializes array of length
+     * one and sets size instance variable to zero.
      */
     public Enrollment() {
         this.enrollStudents = new EnrollStudent[Constant.ENROLLMENT_INITIAL.getValue()];
@@ -18,8 +19,9 @@ public class Enrollment {
     }
 
     /**
-     *
-     * @param enrollStudent
+     * Adds a given EnrollStudent into enrollment array
+     * after increasing the size of the array by one.
+     * @param enrollStudent EnrollStudent to be enrolled.
      */
     public void add(EnrollStudent enrollStudent) {
         if(this.size == enrollStudents.length){
@@ -37,6 +39,12 @@ public class Enrollment {
         this.size++;
     }
 
+    /**
+     * Removes an EnrollStudent from the enrollment array
+     * by overriding them with the student at the end of the array.
+     * Leaves a null reference at the end of the array.
+     * @param enrollStudent EnrollStudent to be removed.
+     */
     public void remove(EnrollStudent enrollStudent) {
         int removePosition = find(enrollStudent);
         if(removePosition != Constant.NOT_FOUND.getValue()){
@@ -46,10 +54,24 @@ public class Enrollment {
         }
     }
 
+    /**
+     * Checks whether an enrolled student is already taking
+     * the amount of credits input.
+     * @param student EnrollStudent to be checked.
+     * @param credits amount of credits to be checked.
+     * @return true if already taking that many credits, false otherwise.
+     */
     public boolean isAlreadyTaking(EnrollStudent student, int credits) {
         int position = find(student);
         return (this.enrollStudents[position].getCreditsEnrolled() == credits);
     }
+
+    /**
+     * Checks whether a specified EnrollStudent is
+     * currently in the enrollment array.
+     * @param enrollStudent EnrollStudent to look for.
+     * @return true if they are in the array, false if not.
+     */
     public boolean contains(EnrollStudent enrollStudent) {
         for(int i = 0; i < this.size; i++) {
             if(enrollStudents[i].equals(enrollStudent)){
@@ -59,6 +81,12 @@ public class Enrollment {
         return false;
     }
 
+    /**
+     * Finds the index of a specified student
+     * in the enrollment array.
+     * @param enrollStudent EnrollStudent to look for.
+     * @return the index of enrollStudent in the array.
+     */
     public int find(EnrollStudent enrollStudent) {
         for(int i = 0; i < this.size; i++) {
             if(enrollStudents[i].equals(enrollStudent)){
@@ -68,6 +96,12 @@ public class Enrollment {
         return Constant.NOT_FOUND.getValue();
     }
 
+    /**
+     * Searches the enrollment array for a student that has the given profile
+     * and returns a reference to said student.
+     * @param profile profile to search for
+     * @return a reference to the student containing that profile.
+     */
     public EnrollStudent getEnrollStudent(Profile profile) {
         for(int i = 0; i < this.size; i++) {
             if(enrollStudents[i].getProfile().equals(profile)){
@@ -77,16 +111,29 @@ public class Enrollment {
         return null;
     }
 
+    /**
+     * Sets the amount of credits a specified EnrollStudent is enrolled for.
+     * @param enrollStudent EnrollStudent to change credits of.
+     * @param enrollCredits amount of credits to change to.
+     */
     public void setEnrollCredits(EnrollStudent enrollStudent, int enrollCredits) {
         int position = find(enrollStudent);
         this.enrollStudents[position].setCreditsEnrolled(enrollCredits);
     }
 
+    /**
+     * tells whether the enrollment is empty.
+     * @return true if empty, false if not.
+     */
     public boolean isEmpty() {
         return (this.size == 0);
     }
 
-    public void print() { //print the array as is without sorting
+    /**
+     * Prints out the enrollment array as a list in
+     * string representation, in the same order of the array.
+     */
+    public void print() {
         if(!isEmpty()){
             System.out.println("** Enrollment **");
             for(int i = 0; i < this.size; i++){
@@ -98,6 +145,10 @@ public class Enrollment {
         System.out.println("Enrollment is empty!");
     }
 
+    /**
+     * Prints out the tuition due for each enrolled student in the enrollment array.
+     * @param roster reference to the Roster from the TuitionManager.
+     */
     public void printTuition(Roster roster) {
         double tuition;
         int creditsEnrolled;
@@ -119,6 +170,11 @@ public class Enrollment {
         System.out.println("** end of tuition due **");
     }
 
+    /**
+     * Adds the credits a student was enrolled in to their completed credits
+     * and prints out a list of all students who are now eligible for graduation.
+     * @param roster reference to the Roster from the TuitionManager.
+     */
     public void semesterEnd(Roster roster) {
         int creditsEnrolled;
         int amountGraduated = 0;

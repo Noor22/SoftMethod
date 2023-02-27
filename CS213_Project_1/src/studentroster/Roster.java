@@ -1,17 +1,17 @@
 package studentroster;
 
 /**
- The Roster class acts as a database for the students, storing
- an array of students and the amount of students in the roster.
- @author Dylan Turner, Noor Hasan
+ * The Roster class acts as a database for the students, storing
+ * an array of students and the amount of students in the roster.
+ * @author Dylan Turner, Noor Hasan
  */
 public class Roster {
     private Student[] roster;
     private int size;
 
     /**
-     Constructor for the Roster Object.
-     Initial size is 4.
+     * Constructor for the Roster Object.
+     * Initial size is 4.
      */
     public Roster(){
         this.roster = new Student[Constant.INITIAL_SIZE.getValue()];
@@ -19,9 +19,9 @@ public class Roster {
     }
 
     /**
-     Determine the index of a student in the roster if they are in it.
-     @param student student to look for.
-     @return the index of the desired student's location in the roster.
+     * Determine the index of a student in the roster if they are in it.
+     * @param student student to look for.
+     * @return the index of the desired student's location in the roster.
      */
     private int find(Student student) {
         for(int i = 0; i < this.roster.length;i++){
@@ -32,6 +32,12 @@ public class Roster {
         return (Constant.NOT_FOUND.getValue());
     }
 
+    /**
+     * Searches the roster array for a student that has the given profile
+     * and returns a reference to said student.
+     * @param profile profile to search for
+     * @return a reference to the student containing that profile.
+     */
     public Student getStudent(Profile profile) {
         for(int i = 0; i < this.size; i++) {
             if(roster[i].getProfile().equals(profile)){
@@ -43,15 +49,15 @@ public class Roster {
     }
 
     /**
-     Checks if the roster is currently empty.
-     @return true if the roster is empty, false if not.
+     * Checks if the roster is currently empty.
+     * @return true if the roster is empty, false if not.
      */
     public boolean isEmpty() {
         return(this.size == 0);
     }
 
     /**
-     Increases the size of the roster by 4 when necessary.
+     * Increases the size of the roster by 4 when necessary.
      */
     private void grow() {
         Student[] newRoster = new Student[this.size + Constant.INITIAL_SIZE.getValue()];
@@ -62,9 +68,9 @@ public class Roster {
     }
 
     /**
-     Adds a student to the roster if it is allowed. If it is full then calls grow().
-     @param student the student to add to the roster.
-     @return true if the student could be added, false otherwise.
+     * Adds a student to the roster if it is allowed. If it is full then calls grow().
+     * @param student the student to add to the roster.
+     * @return true if the student could be added, false otherwise.
      */
     public boolean add(Student student) {
         if (find(student) == Constant.NOT_FOUND.getValue()) {
@@ -79,10 +85,10 @@ public class Roster {
     }
 
     /**
-     Removes a student from the roster if they can be found.
-     Maintains the order of the array after removal
-     @param student student to be removed.
-     @return true if the student was removed, false otherwise.
+     * Removes a student from the roster if they can be found.
+     * Maintains the order of the array after removal
+     * @param student student to be removed.
+     * @return true if the student was removed, false otherwise.
      */
     public boolean remove(Student student) {
         int removePosition = find(student);
@@ -98,9 +104,9 @@ public class Roster {
     }
 
     /**
-     Checks if the student is currently in the roster.
-     @param student student to be looked for.
-     @return true if the student is in the roster, false otherwise.
+     * Checks if the student is currently in the roster.
+     * @param student student to be looked for.
+     * @return true if the student is in the roster, false otherwise.
      */
     public boolean contains(Student student) {
         for (Student value : this.roster) {
@@ -111,6 +117,11 @@ public class Roster {
         return false;
     }
 
+    /**
+     * Checks if the specified profile can be found in the roster.
+     * @param profile profile to be looked for.
+     * @return true if the profile is in the roster, false otherwise.
+     */
     public boolean contains(Profile profile) {
         for (Student value : this.roster) {
             if(value == null) {return false;}
@@ -122,8 +133,8 @@ public class Roster {
     }
 
     /**
-     Helper method for the print() methods below.
-     Prints out the roster sorted as it currently is.
+     * Helper method for the print() methods below.
+     * Prints out the roster sorted as it currently is.
      */
     public void printRoster() {
         for(int i = 0; i < this.size; i++) {
@@ -136,7 +147,7 @@ public class Roster {
     }
 
     /**
-     Prints out the roster sorted by profile.
+     * Prints out the roster sorted by profile.
      */
     public void print() {
         sort(SortType.PROFILE);
@@ -146,7 +157,7 @@ public class Roster {
     }
 
     /**
-     Prints out the roster sorted by major.
+     * Prints out the roster sorted by major.
      */
     public void printBySchoolMajor() {
         sort(SortType.MAJOR);
@@ -156,7 +167,7 @@ public class Roster {
     }
 
     /**
-     Prints out the roster sorted by standing.
+     * Prints out the roster sorted by standing.
      */
     public void printByStanding() {
         sort(SortType.STANDING);
@@ -166,9 +177,9 @@ public class Roster {
     }
 
     /**
-     In place sorting algorithm used to sort the roster by a desired sort type.
-     This is a modified version of the selection sort algorithm.
-     @param type the sort type that should be used.
+     * In place sorting algorithm used to sort the roster by a desired sort type.
+     * This is a modified version of the selection sort algorithm.
+     * @param type the sort type that should be used.
      */
     private void sort(SortType type)
     {
@@ -185,12 +196,12 @@ public class Roster {
         }
     }
     /**
-     Helper method for the selection sort algorithm. Determines whether one student
-     should be before another student based on the sort type.
-     @param s1 the first student.
-     @param s2 the second student.
-     @param sortType the desired sort type.
-     @return true if s1 should be before s2, false otherwise.
+     * Helper method for the selection sort algorithm. Determines whether one student
+     * should be before another student based on the sort type.
+     * @param s1 the first student.
+     * @param s2 the second student.
+     * @param sortType the desired sort type.
+     * @return true if s1 should be before s2, false otherwise.
      */
     private boolean isLess(Student s1, Student s2, SortType sortType){
         switch(sortType){
@@ -211,8 +222,8 @@ public class Roster {
     }
 
     /**
-     Helper method for the printList() method. Determines how many students
-     are in the specified school and displays them.
+     * Helper method for the printList() method. Determines how many students
+     * are in the specified school and displays them.
      @param school school that students should belong to.
      */
     public void list(String school) {
@@ -229,9 +240,9 @@ public class Roster {
     }
 
     /**
-     Replaces a students major if it passes the validity checks.
-     @param student student whose major should be replaced
-     @param major the major that it should be changed to.
+     * Replaces a students major if it passes the validity checks.
+     * @param student student whose major should be replaced
+     * @param major the major that it should be changed to.
      */
     public boolean replaceMajor(Student student, String major){
         int position = find(student);
@@ -247,6 +258,12 @@ public class Roster {
         return false;
     }
 
+    /**
+     * Checks if a scholarship can be replaced for a given Resident student.
+     * @param resident resident student to check.
+     * @param scholarShip scholarship to check
+     * @return true if it can be replaced, false if not
+     */
     public boolean replaceScholar(Resident resident, String scholarShip) {
         if(resident.isEligible()){
             resident.setScholarship(Integer.parseInt(scholarShip));
