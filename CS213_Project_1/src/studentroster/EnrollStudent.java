@@ -15,8 +15,7 @@ public class EnrollStudent {
     }
 
     public boolean equals(EnrollStudent otherEnroll){
-        return (this.profile == otherEnroll.profile
-                && this.creditsEnrolled == otherEnroll.creditsEnrolled);
+        return (this.profile.equals(otherEnroll.profile));
     }
 
     public String toString(){

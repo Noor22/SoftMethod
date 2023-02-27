@@ -22,17 +22,22 @@ public class Enrollment {
             return;
         }
         enrollStudents[size] = enrollStudent;
+        this.size++;
     }
 
     public void remove(EnrollStudent enrollStudent) {
         int removePosition = find(enrollStudent);
         if(removePosition != Constant.NOT_FOUND.getValue()){
             enrollStudents[removePosition] = enrollStudent;
-            enrollStudents[this.size] = null;
+            enrollStudents[this.size-1] = null;
             this.size--;
         }
     }
 
+    public boolean isAlreadyTaking(EnrollStudent student, int credits) {
+        int position = find(student);
+        return (this.enrollStudents[position].getCreditsEnrolled() == credits);
+    }
     public boolean contains(EnrollStudent enrollStudent) {
         for(int i = 0; i < this.size; i++) {
             if(enrollStudents[i].equals(enrollStudent)){
@@ -56,15 +61,19 @@ public class Enrollment {
         this.enrollStudents[position].setCreditsEnrolled(enrollCredits);
     }
 
+    public boolean isEmpty() {
+        return (this.size == 0);
+    }
+
     public void print() { //print the array as is without sorting
-        for(int i = 0; i < this.size; i++){
-            System.out.println(enrollStudents[i].toString());
+        if(!isEmpty()){
+            System.out.println("Print Enrollment");
+            for(int i = 0; i < this.size; i++){
+                System.out.println(enrollStudents[i].toString());
+            }
+            System.out.println("Print Enrollment End");
         }
+        System.out.println("Enrollment is empty");
     }
 
-    public void printTuition() {
-        for(int i = 0; i < this.size; i++){
-
-        }
-    }
 }
