@@ -23,6 +23,11 @@ public class Resident extends Student{
     }
 
     @Override
+    public boolean isValid(int creditEnrolled) {
+        return super.isValid(creditEnrolled);
+    }
+
+    @Override
     public boolean isResident() {
         return true;
     }

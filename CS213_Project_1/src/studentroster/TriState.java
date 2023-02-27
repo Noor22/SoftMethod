@@ -23,4 +23,9 @@ public class TriState extends NonResident{
     public boolean isResident() {
         return super.isResident();
     }
+
+    @Override
+    public boolean isValid(int creditEnrolled) {
+        return super.isValid(creditEnrolled);
+    }
 }

@@ -79,7 +79,10 @@ public abstract class Student implements Comparable<Student> {
      * @param creditEnrolled
      * @return
      */
-    public boolean isValid(int creditEnrolled){};
+    public boolean isValid(int creditEnrolled){
+        return  !(creditEnrolled > 24 || creditEnrolled < 3);
+
+    }
 
     /**
      *

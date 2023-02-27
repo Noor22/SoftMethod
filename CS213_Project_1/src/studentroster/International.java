@@ -20,6 +20,18 @@ public class International extends NonResident {
     }
 
     @Override
+    public boolean isValid(int creditEnrolled) {
+        if(!super.isValid(creditEnrolled)){
+            return false;
+        }else if(creditEnrolled >= TuitionValues.FULL_TIME_MIN.getValue() && isStudyAbroad){
+            return false;
+        }else if(creditEnrolled < TuitionValues.FULL_TIME_MIN.getValue() && !isStudyAbroad){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public boolean isResident() {
         return super.isResident();
     }

@@ -22,6 +22,11 @@ public class NonResident extends Student {
     }
 
     @Override
+    public boolean isValid(int creditEnrolled) {
+        return super.isValid(creditEnrolled);
+    }
+
+    @Override
     public boolean isResident() {
         return false;
     }
