@@ -77,21 +77,6 @@ public class TuitionManager {
 
     private boolean processAdditionCommands(Scanner scanner, String operationCode) {
         switch (operationCode) {
-            case "LS":                          // load the student roster from an external file
-
-                return false;
-            case "AR":                          // add a Resident student, for example, AR John Doe 4/3/2003 CS 29
-                addResident(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next());
-                return false;
-            case "AN":                          // add a NonResident student, for example, AN Leo Jones 4/21/2006 ITI 20
-                addNonResident(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next());
-                return false;
-            case "AT":                          // add a Tri state student, for example, AT Emma Miller 2/28/2003 CS 15 NY
-                addTriState(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next());
-                return false;
-            case "AI":                          // add an International student, for example, AI Oliver Chang 11/30/2000 BAIT 78 false
-                addInternational(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next(), scanner.next());
-                return false;
             case "E":                           // enroll a student with the number of credits. For example, E John Doe 4/3/2003 24
                 enroll(scanner.next(),scanner.next(),scanner.next(),Integer.parseInt(scanner.next()));
                 return false;
@@ -111,10 +96,36 @@ public class TuitionManager {
                 // and print out the students who have already completed 120 credits or more.
                 return false;
             default:
+                return processAddCommands(scanner,operationCode);
+        }
+    }
+    private boolean processAddCommands(Scanner scanner, String operationCode){
+        switch(operationCode){
+            case "LS":                          // load the student roster from an external file
+                Scanner fileScanner = new Scanner(scanner.next());
+                fileScanner.useDelimiter(",");
+                while(fileScanner.hasNext()){
+                    processAddCommands(fileScanner, "A" + fileScanner.next());
+                }
+                return false;
+            case "AR":                          // add a Resident student, for example, AR John Doe 4/3/2003 CS 29
+                addResident(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next());
+                return false;
+            case "AN":                          // add a NonResident student, for example, AN Leo Jones 4/21/2006 ITI 20
+                addNonResident(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next());
+                return false;
+            case "AT":                          // add a Tri state student, for example, AT Emma Miller 2/28/2003 CS 15 NY
+                addTriState(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next());
+                return false;
+            case "AI":                          // add an International student, for example, AI Oliver Chang 11/30/2000 BAIT 78 false
+                addInternational(scanner.next(),scanner.next(),scanner.next(),scanner.next(),scanner.next(), scanner.next());
+                return false;
+            default:
                 System.out.println(operationCode + " is an invalid command!");
                 return false;
-        } //39 lines, be careful ----------------------------------------------------------------------------------------------
+        }
     }
+
 
     /**
      Adds a student to the Roster if it passes all the validity checks.
