@@ -70,12 +70,12 @@ public class TuitionManager {
             case "Q":                           //terminate command.
                 return true;
             default:                            //invalid command.
-                return processAdditionCommands(scanner,operationCode); // continues to helper method to process additional commands
+                return processAdditionalCommands(scanner,operationCode); // continues to helper method to process additional commands
                                                                        // in order to maintain clean coding practices.
         }
     }
 
-    private boolean processAdditionCommands(Scanner scanner, String operationCode) {
+    private boolean processAdditionalCommands(Scanner scanner, String operationCode) {
         switch (operationCode) {
             case "E":                           // enroll a student with the number of credits. For example, E John Doe 4/3/2003 24
                 enroll(scanner.next(),scanner.next(),scanner.next(),Integer.parseInt(scanner.next()));
