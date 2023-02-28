@@ -177,7 +177,6 @@ public class Enrollment {
      */
     public void semesterEnd(Roster roster) {
         int creditsEnrolled;
-        int amountGraduated = 0;
         System.out.println("Credits completed has been updated.");
         System.out.println("** list of students eligible for graduation **");
         for(EnrollStudent enrolled : this.enrollStudents) {
@@ -187,7 +186,6 @@ public class Enrollment {
                 currentStudent.addCredits(creditsEnrolled);
                 if(currentStudent.getCredits() >= 120) {
                     System.out.println(currentStudent + " has graduated with " + currentStudent.getCredits());
-                    amountGraduated++;
                 }
             }
         }

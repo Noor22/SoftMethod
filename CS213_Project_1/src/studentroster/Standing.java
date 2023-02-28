@@ -7,10 +7,9 @@ package studentroster;
  */
 
 public enum Standing {
-    FRESHMAN (1),
-    SOPHOMORE (2),
-    JUNIOR (3),
-    SENIOR (4);
+    FRESHMAN (30),
+    SOPHOMORE (60),
+    JUNIOR (90);
 
     private final int value;
 

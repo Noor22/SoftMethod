@@ -439,7 +439,7 @@ public class TuitionManager {
             System.out.println(fname + " " + lname + " " + dob + " part time student is not eligible for the scholarship.");
             return;
         }
-        if(Integer.parseInt(scholarShip) > 10000 || Integer.parseInt(scholarShip) <= 0){
+        if(Integer.parseInt(scholarShip) > TuitionValues.MAX_SCHOLARSHIP.getValue() || Integer.parseInt(scholarShip) <= 0){
             System.out.println(scholarShip + ": invalid amount.");
             return;
         }
@@ -609,7 +609,7 @@ public class TuitionManager {
      * @param string string to check.
      * @return true if numeric, false if not.
      */
-    public static boolean isNumeric(String string) {
+    private static boolean isNumeric(String string) {
         try {
             Double.parseDouble(string);
             return true;

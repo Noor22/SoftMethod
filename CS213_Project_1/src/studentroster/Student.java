@@ -57,11 +57,11 @@ public abstract class Student implements Comparable<Student> {
      * @return string representation of student's standing
      */
     public String getStanding(){
-        if(this.creditCompleted < 30) {
+        if(this.creditCompleted < Standing.FRESHMAN.getValue()) {
             return "Freshmen";
-        }else if(this.creditCompleted < 60){
+        }else if(this.creditCompleted < Standing.SOPHOMORE.getValue()){
             return "Sophomore";
-        }else if(this.creditCompleted < 90){
+        }else if(this.creditCompleted < Standing.JUNIOR.getValue()){
             return "Junior";
         }
         return "Senior";
@@ -91,7 +91,7 @@ public abstract class Student implements Comparable<Student> {
      * @return true if valid amount, false if not.
      */
     public boolean isValid(int creditEnrolled){
-        return  !(creditEnrolled > 24 || creditEnrolled < 3);
+        return  !(creditEnrolled > TuitionValues.MAX_CREDITS.getValue() || creditEnrolled < TuitionValues.MIN_CREDITS.getValue());
     }
 
     /**

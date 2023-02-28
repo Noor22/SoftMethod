@@ -32,7 +32,7 @@ public class Resident extends Student{
         int exCred = (int)(creditsEnrolled - TuitionValues.ADDITIONAL_MAX.getValue());
         if(exCred < 0)
             exCred = 0;
-        if(creditsEnrolled >= 12 ){ // full time student
+        if(creditsEnrolled >= TuitionValues.FULL_TIME_MIN.getValue() ){ // full time student
             tuition = TuitionValues.FULL_RESIDENT_BASE.getValue() + TuitionValues.FULL_UNIVERSITY_FEE.getValue()
                     + TuitionValues.ADDITIONAL_RESIDENT_RATE.getValue() * exCred - scholarship;
         }else{

@@ -30,11 +30,11 @@ public class TriState extends NonResident{
     public double tuitionDue(int creditsEnrolled){
         double tuition;
         tuition = super.tuitionDue(creditsEnrolled); // uses nonresident tuition as a base
-        if(creditsEnrolled >= 12) {
+        if(creditsEnrolled >= TuitionValues.FULL_TIME_MIN.getValue()) {
             if (state.equalsIgnoreCase("NY")) {
-                tuition -= 4000;
+                tuition -= TuitionValues.NEW_YORK_DISCOUNT.getValue();
             } else if (state.equalsIgnoreCase("CT")) {
-                tuition -= 5000;
+                tuition -= TuitionValues.CONNECTICUT.getValue();
             }
         }
         return tuition;

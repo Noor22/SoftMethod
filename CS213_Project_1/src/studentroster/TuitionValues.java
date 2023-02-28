@@ -12,7 +12,6 @@ public enum TuitionValues {
     FULL_UNIVERSITY_FEE (3268),
     HEALTH_INSURANCE_FEE (2650),
     PART_RESIDENT_RATE (404),
-    NONRESIDENT_RATE (966),
     PART_UNIVERSITY_FEE (2614.4), //80% Full University Fee
     ADDITIONAL_RESIDENT_RATE (404),
     ADDITIONAL_NONRESIDENT_RATE (966),
@@ -20,8 +19,6 @@ public enum TuitionValues {
     //Max and Min Credits Values
     MAX_CREDITS (24),
     MIN_CREDITS (3),
-    ABROAD_MAX_CREDITS (12),
-    INTERNAL_MIN_CREDITS (12),
     ADDITIONAL_MAX (16),
     FULL_TIME_MIN (12),
 

@@ -54,7 +54,7 @@ public class EnrollStudent {
 
     /**
      * Getter method for the EnrollStudent's profile
-     * @return the EnrollStudent's profile.
+     * @return the EnrollStudent's profile.n
      */
     public Profile getProfile() {
         return profile;
