@@ -172,7 +172,7 @@ public class Enrollment {
         System.out.println("** end of tuition due **");
     }
     public String formatDouble(double t){
-        String pattern = ".##";
+        String pattern = ".00";
         DecimalFormat decimalFormat = new DecimalFormat(pattern);
 
         String format = decimalFormat.format(t);
