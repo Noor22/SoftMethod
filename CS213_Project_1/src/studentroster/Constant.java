@@ -30,7 +30,8 @@ public enum Constant {
     FOUR_REQUIRED (4),
     FIVE_REQUIRED (5),
     SIX_REQUIRED (6),
-    SEVEN_REQUIRED (7);
+    SEVEN_REQUIRED (7),
+    DATE_TESTS(5);
 
     private final int value;
 
