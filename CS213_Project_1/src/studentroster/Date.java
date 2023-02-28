@@ -189,22 +189,22 @@ public class Date implements Comparable<Date> {
      */
     public static void main(String[] args) {
         int[] monthTest1 = {0, 13, 50, -1, 50};                 //Months between 1-12.
-        int[] dayTest1 = {1, 5, 10, 15, 20};                            //Includes required case 13/31/2003
+        int[] dayTest1 = {1, 5, 10, 15, 20};                            //Includes required case 13/31/2003 done
         int[] yearTest1 = {2003, 2005, 2007, 2009, 2011};
         callTests(monthTest1, dayTest1, yearTest1, 1, false);
 
         int[] monthTest2 = {6, 4, 9, 11, 4};                    //Days between 1-30 for correct months.
-        int[] dayTest2 = {0, 31, 33, 31, 34};                           //Includes required case 4/31/2003
-        int[] yearTest2 = {2005, 2003, 2007, 2009, 2011};               //Includes required case -1/31/2003
+        int[] dayTest2 = {0, 31, 33, 31, 34};                           //Includes required case 4/31/2003 done
+        int[] yearTest2 = {2005, 2003, 2007, 2009, 2011};               //Includes required case -1/31/2003 done
         callTests(monthTest2, dayTest2, yearTest2, 2, false);
 
         int[] monthTest3 = {1, 3, 5, 8, 10};                    //Days between 1-31 for correct months.
-        int[] dayTest3 = {0, 32, 38, 1005, 35};                            //Includes required case 3/32/2003
+        int[] dayTest3 = {0, 32, 38, 1005, 35};                            //Includes required case 3/32/2003 done
         int[] yearTest3 = {2005, 2003, 2007, 2009, 2011};
         callTests(monthTest3, dayTest3, yearTest3, 3, false);
 
         int[] monthTest4 = {2, 2, 2, 2, 2};                    //February's days between 1-28 on non-leap year.
-        int[] dayTest4 = {0, 29, 29, 29, 30};                           //Includes required case 2/29/2003.
+        int[] dayTest4 = {0, 29, 29, 29, 30};                           //Includes required case 2/29/2003. done
         int[] yearTest4 = {2001, 2003, 2009, 2014, 2019};
         callTests(monthTest4, dayTest4, yearTest4, 4, false);
 
