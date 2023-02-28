@@ -1,5 +1,7 @@
 package studentroster;
 
+import java.text.DecimalFormat;
+
 /**
  The Enrollment class acts as a database for enrolled students, storing
  an array of enrolled students and the size of the array.
@@ -164,10 +166,17 @@ public class Enrollment {
                 creditsEnrolled = enrolled.getCreditsEnrolled();
                 System.out.println(currentStudent.getProfile().toString() + " "
                         + currentStudent.getType() + " enrolled " + creditsEnrolled
-                        + " credits: tuition due: $" + tuition);
+                        + " credits: tuition due: $" + formatDouble(tuition));
             }
         }
         System.out.println("** end of tuition due **");
+    }
+    public String formatDouble(double t){
+        String pattern = ".##";
+        DecimalFormat decimalFormat = new DecimalFormat(pattern);
+
+        String format = decimalFormat.format(t);
+        return format;
     }
 
     /**
